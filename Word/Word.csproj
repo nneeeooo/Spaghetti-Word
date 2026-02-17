@@ -1,0 +1,1086 @@
+﻿<Project ToolsVersion="17.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--
+    This section defines project-level properties.
+
+    AssemblyName
+      Name of the output assembly.
+    Configuration
+      Specifies a default value for debug.
+    OutputType
+      Must be "Library" for VSTO.
+    Platform
+      Specifies what CPU the output of this project can run on.
+    NoStandardLibraries
+      Set to "false" for VSTO.
+    RootNamespace
+      In C#, this specifies the namespace given to new files. In VB, all objects are
+      wrapped in this namespace at runtime.
+  -->
+  <PropertyGroup>
+    <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A9990840-E330-401E-A30A-9F70606D846B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <RootNamespace>Word</RootNamespace>
+    <AssemblyName>Macaroni Word</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <DefineConstants>VSTO40;UseOfficeInterop</DefineConstants>
+    <ResolveComReferenceSilent>true</ResolveComReferenceSilent>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <PublishUrl>C:\Users\andrii-dtp\Desktop\TESTSTSTST\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>en</TargetCulture>
+    <ApplicationVersion>1.0.0.33</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateInterval>0</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <ProductName>Spaghetti</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>Spaghetti</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
+  </PropertyGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <PropertyGroup>
+    <!--
+      OfficeApplication
+        Add-in host application
+    -->
+    <OfficeApplication>Word</OfficeApplication>
+  </PropertyGroup>
+  <!--
+    This section defines properties that are set when the "Debug" configuration is selected.
+
+    DebugSymbols
+      If "true", create symbols (.pdb). If "false", do not create symbols.
+    DefineConstants
+      Constants defined for the preprocessor.
+    EnableUnmanagedDebugging
+      If "true", starting the debugger will attach both managed and unmanaged debuggers.
+    Optimize
+      If "true", optimize the build output. If "false", do not optimize.
+    OutputPath
+      Output path of project relative to the project file.
+    WarningLevel
+      Warning level for the compiler.
+  -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
+  </PropertyGroup>
+  <!--
+    This section defines properties that are set when the "Release" configuration is selected.
+
+    DebugSymbols
+      If "true", create symbols (.pdb). If "false", do not create symbols.
+    DefineConstants
+      Constants defined for the preprocessor.
+    EnableUnmanagedDebugging
+      If "true", starting the debugger will attach both managed and unmanaged debuggers.
+    Optimize
+      If "true", optimize the build output. If "false", do not optimize.
+    OutputPath
+      Output path of project relative to the project file.
+    WarningLevel
+      Warning level for the compiler.
+  -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!--
+    This section specifies references for the project.
+  -->
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="AxInterop.WMPLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WMPLib.1.0.0\lib\AxInterop.WMPLib.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="FFMpegCore, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FFMpegCore.5.2.0\lib\netstandard2.0\FFMpegCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Gma.System.MouseKeyHook, Version=5.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MouseKeyHook.5.7.1\lib\net48\Gma.System.MouseKeyHook.dll</HintPath>
+    </Reference>
+    <Reference Include="Instances, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Instances.3.0.1\lib\netstandard2.0\Instances.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.WMPLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WMPLib.1.0.0\lib\Interop.WMPLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="libse, Version=4.0.12.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libse.4.0.12\lib\net48\libse.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.2\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Console, Version=4.0.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.1\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=9.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.9.0.6\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Tracing, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.Tracing.4.3.0\lib\net462\System.Diagnostics.Tracing.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.9.0.6\lib\net462\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.9.0.2\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Expressions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.3.1\lib\net462\System.Runtime.Extensions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.4.3.0\lib\net463\System.Runtime.InteropServices.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.AccessControl, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.9.0.2\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.9.0.2\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UtfUnknown, Version=2.0.0.0, Culture=neutral, PublicKeyToken=90217ce7a23260d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\UTF.Unknown.2.5.1\lib\net40\UtfUnknown.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="zlib.net, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\zlib.net-mutliplatform.1.0.8\lib\netstandard2.0\zlib.net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Word, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="$([System.String]::Copy(&quot;;$(DefineConstants);&quot;).ToLower().Contains(';useofficeinterop;')) or $([System.String]::Copy(&quot;,$(DefineConstants),&quot;).ToLower().Contains(',useofficeinterop,'))">
+      <ItemGroup>
+        <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+          <Private>False</Private>
+          <EmbedInteropTypes>true</EmbedInteropTypes>
+        </Reference>
+        <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+          <Private>False</Private>
+          <EmbedInteropTypes>true</EmbedInteropTypes>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <COMReference Include="Microsoft.Office.Core">
+          <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+          <VersionMajor>2</VersionMajor>
+          <VersionMinor>7</VersionMinor>
+          <Lcid>0</Lcid>
+          <WrapperTool>tlbimp</WrapperTool>
+          <Isolated>False</Isolated>
+          <EmbedInteropTypes>true</EmbedInteropTypes>
+        </COMReference>
+        <COMReference Include="Microsoft.Office.Interop.Word">
+          <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
+          <VersionMajor>8</VersionMajor>
+          <VersionMinor>6</VersionMinor>
+          <Lcid>0</Lcid>
+          <WrapperTool>tlbimp</WrapperTool>
+          <Isolated>False</Isolated>
+          <EmbedInteropTypes>true</EmbedInteropTypes>
+        </COMReference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <!--
+    This section defines the user source files that are part of the project.
+     
+    A "Compile" element specifies a source file to compile.
+    An "EmbeddedResource" element specifies an .resx file for embedded resources.
+    A "None" element specifies a file that is not to be passed to the compiler (for instance, 
+    a text file or XML file).
+    The "AppDesigner" element specifies the directory where the application properties files
+    can be found.
+  -->
+  <ItemGroup>
+    <Compile Include="Forms\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FontChangerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FontChangerForm.Designer.cs">
+      <DependentUpon>FontChangerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ColorPickerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorPickerForm.Designer.cs">
+      <DependentUpon>ColorPickerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ShortcutsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShortcutsForm.Designer.cs">
+      <DependentUpon>ShortcutsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SubtitleToolsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SubtitleToolsForm.Designer.cs">
+      <DependentUpon>SubtitleToolsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Subtitles.cs" />
+    <Compile Include="Modules\Tables.cs" />
+    <Compile Include="Modules\Text.cs" />
+    <Compile Include="Forms\WordPrepForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WordPrepForm.Designer.cs">
+      <DependentUpon>WordPrepForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\DocPropsHelper.cs" />
+    <Compile Include="Modules\Fonts.cs" />
+    <Compile Include="Forms\FontsReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FontsReportForm.Designer.cs">
+      <DependentUpon>FontsReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Images.cs" />
+    <Compile Include="Helpers\RegistryHelper.cs" />
+    <Compile Include="Modules\Spotlight.cs" />
+    <Compile Include="Forms\SpotlightForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpotlightForm.Designer.cs">
+      <DependentUpon>SpotlightForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Types\FontInfo.cs" />
+    <EmbeddedResource Include="Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ColorPickerForm.resx">
+      <DependentUpon>ColorPickerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WordPrepForm.resx">
+      <DependentUpon>WordPrepForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FontChangerForm.resx">
+      <DependentUpon>FontChangerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FontsReportForm.resx">
+      <DependentUpon>FontsReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpotlightForm.resx">
+      <DependentUpon>SpotlightForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShortcutsForm.resx">
+      <DependentUpon>ShortcutsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SubtitleToolsForm.resx">
+      <DependentUpon>SubtitleToolsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Ribbon.resx">
+      <DependentUpon>Ribbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Ribbon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Ribbon.Designer.cs">
+      <DependentUpon>Ribbon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Shared.cs" />
+    <Compile Include="ThisAddIn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="README.md" />
+    <None Include="ThisAddIn.Designer.xml">
+      <DependentUpon>ThisAddIn.cs</DependentUpon>
+    </None>
+    <Compile Include="ThisAddIn.Designer.cs">
+      <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Find Fast_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lamp_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Find Fast_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\recycle_bin_full-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application_hourglass_small-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cross_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Help 3D_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\recycle_bin_full-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font_adobe-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font_adobe-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restrict-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unbreak_sm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regedit_binary-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mail text_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Etherbrian-Presto-Zap.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Etherbrian-Squeaky-Clean-Blue-soap.16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Etherbrian-Squeaky-Clean-Blue-soap.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\media_player_stream_conn1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regedit-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Services_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sheet with cubes 2_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regedit_file-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\message_empty_tack-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font_bitmap-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\charmap_w2k-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clean_drive-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font_opentype-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font_tt-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font_opentype-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kodak_imaging_file-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Etherbrian-Webuosities-Empty.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\directory_fonts-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\calendar-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\message_file-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Blank sheet_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Filling forms_16x16-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\calendar-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\diskettes_copy-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Check mard_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Marking forms_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mail text_16x16-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\server_gear-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cursor_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Filling forms_16x16-21.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Resize sheet %28H%29_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Etherbrian-System-Error-Snuffed.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Animals-Chick.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Etherbrian-Webuosities-Crossing.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Folder Transfer_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3ds_32x32-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Tip of the Day_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sync Earth_32x32-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sheets conflict 2_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\recycle_bin_file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\INFO_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Text field sheet_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3D Text_32x32-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Kitchen-Strawberry.16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mellon 16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\media_player_stream_sun4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\msagent_file-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mellon 16x161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Star_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Animals-Chiken.16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Animals-Chiken.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Animals-Chick.321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Animals-Squirrel.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Daily-Items-White-Rose-1.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\5370913027089627819.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Resize sheet %28H%29_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Resize sheet %28H%29_16x161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Deform sheet %28H%29_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Resize sheet %28V%29_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin sheet_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\message_tack-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Joy controls %28up%29_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Joy controls %28on%29_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Joy controls %28on%29_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\no-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\no2-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\address_book_card_copy-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\address_book_card_copy-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bar_graph-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\write_file-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tools_gear-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Deform sheet %28V%29_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Deform sheet %28H%29_32x321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Deform sheet %28H%29_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\camera_vid-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\video_-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\package-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\directory_check-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Kitchen-Beer-2.16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\media_player_stream_sun41.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\directory_check-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FIRE_16x16.png" />
+    <None Include="Resources\Cursor_16x161.png" />
+    <None Include="Resources\Font slide_16x16.png" />
+    <None Include="Resources\Lamp_32x321.png" />
+    <None Include="Resources\abc1 BMP %288-bit%29 %281%29 16x16.png" />
+    <None Include="Resources\mouse_trails.ico" />
+    <None Include="Resources\regedit_binary-11.png" />
+    <None Include="Resources\magnifying_glass-1.png" />
+    <None Include="Resources\message_file-11.png" />
+    <None Include="Resources\Sheet print format %28short V%29_16x16.png" />
+    <None Include="Resources\unbreak_sm1.png" />
+    <None Include="Resources\Services_16x161.png" />
+    <None Include="Resources\autocad_16x16-0.png" />
+    <None Include="Resources\tagcleaner_sm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\note-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3ds_32x32-31.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FIRE_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\calendar-51.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search_file_2-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\frog-dance.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\frog-dance1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gray tile_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Config program_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gears-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Resize sheet %28H%29_16x162.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Mozco-Tools-Brush.16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\themes-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\catalog-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\calendar-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Blank sheet_16x161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\autocad_16x16-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gears-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Font slide_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\address_book_card_copy-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font_tt-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Word Document_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Word File_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\w1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Projector sheets_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Projector_16x16-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\video_mk-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\executable_script-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\game_mine_1-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\regedit_file-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\directory_check-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\game_mine_2-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WordPad_32x32-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Word Document_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Wordpad_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font_opentype-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\abc1 BMP %288-bit%29 %283%29 32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Regedit_32x32-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Smiley face_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BMP %2824-bit%29 %282%29 16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Etherbrian-Webuosities-Full.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\msg_information-0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Etherbrian-Webuosities-Crossing.321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\32 x 32 - BMP %2832-bit%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\16 x 16 - BMP %2832-bit%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\autocad_32x32-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gray tile_16x16-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\32 x 32 - BMP %284-bit%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unbreak_sm2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\directory_check-31.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\recycle_bin_empty_cool-4.png" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>92BD8F92CC4600F147CBC72AE256390DB2863906</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>VSTO40;UseOfficeInterop;DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>VSTO40;UseOfficeInterop;TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <!-- Include the build rules for a C# project. -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- Include additional build rules for an Office application add-in. -->
+  <Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- This section defines VSTO properties that describe the host-changeable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
+        <ProjectProperties HostName="Word" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Word" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\16.0\Word\InstallRoot\Path#WINWORD.EXE" DebugInfoCommandLine="/x" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <Host Name="Word" GeneratedCodeNamespace="Word" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="9FDB3C54CC2C17124D8AA33CC35FFAAD2FA8B1D6" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+        </Host>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
+</Project>
