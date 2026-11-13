@@ -39,6 +39,8 @@
     <Compile Include="..\Word\Modules\Shared.cs" Link="Linked\Shared.cs" />
     <Compile Include="..\Word\Modules\Text.cs" Link="Linked\Text.cs" />
     <Compile Include="..\Word\Modules\Tables.cs" Link="Linked\Tables.cs" />
+    <Compile Include="../Word/Modules/TablePrepSettings.cs" Link="Linked/TablePrepSettings.cs" />
+    <Compile Include="../Word/Modules/ParagraphOps.cs" Link="Linked/ParagraphOps.cs" />
     <Compile Include="..\Word\Modules\Spotlight.cs" Link="Linked\Spotlight.cs" />
     <Compile Include="..\Word\Modules\Subtitles.cs" Link="Linked\Subtitles.cs" />
     <Compile Include="..\Word\Modules\SubtitleConvert.cs" Link="Linked\SubtitleConvert.cs" />

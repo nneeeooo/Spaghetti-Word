@@ -8,7 +8,7 @@ namespace Word.Modules
     public static class Tables
     {
         /// <summary>
-        /// Converts all or selected tables in active document by applying various formatting and cleanup options.
+        /// Converts all, selected, or one given (onlyTable) tables in active document by applying various formatting and cleanup options.
         /// </summary>
         internal static void Prepare(
             bool doAutofitWindow,
@@ -29,7 +29,10 @@ namespace Word.Modules
             float customMarginTop = 0f,
             float customMarginBottom = 0f,
             float customMarginLeft = 0f,
-            float customMarginRight = 0f
+            float customMarginRight = 0f,
+
+            Table onlyTable = null,
+            string undoName = null
         )
         {
             var app = Globals.ThisAddIn.Application;
@@ -39,7 +42,7 @@ namespace Word.Modules
 
             var undo = app.UndoRecord;
             if (!undo.IsRecordingCustomRecord)
-                undo.StartCustomRecord("Table convert");
+                undo.StartCustomRecord(undoName ?? "Table convert");
 
             try
             {
@@ -62,7 +65,11 @@ namespace Word.Modules
                     if (doRemoveBorders) RemoveBorders(table);
                 }
 
-                if (convertSelectionOnly)
+                if (onlyTable != null)
+                {
+                    ProcessTable(onlyTable);
+                }
+                else if (convertSelectionOnly)
                 {
                     foreach (Table table in app.Selection.Range.Tables)
                         ProcessTable(table);
@@ -100,6 +107,27 @@ namespace Word.Modules
         }
 
         /// <summary>
+        /// The table the selection is in (first table of the selection). For a nested table, the outermost one.
+        /// Null when the selection has no table.
+        /// </summary>
+        internal static Table GetSelectionOuterTable(Selection selection)
+        {
+            if (selection.Tables.Count == 0) return null;
+
+            var table = selection.Tables[1];
+            if (table.NestingLevel <= 1) return table;
+
+            var start = table.Range.Start;
+            var end = table.Range.End;
+            foreach (Table top in selection.Range.Document.Tables)
+            {
+                if (top.NestingLevel == 1 && top.Range.StoryType == table.Range.StoryType && top.Range.Start <= start && top.Range.End >= end)
+                    return top;
+            }
+            return table;
+        }
+
+        /// <summary>
         /// Sets the row height to at least 0 mm so it autofits the content.
         /// </summary>
         private static void AutofitRowHeight(Table table)
@@ -113,10 +141,7 @@ namespace Word.Modules
         /// </summary>
         private static void DoNotBreakAcrossPages(Table table)
         {
-            foreach (Row row in table.Rows)
-            {
-                row.AllowBreakAcrossPages = 0;
-            }
+            table.Rows.AllowBreakAcrossPages = 0;
         }
 
         /// <summary>
@@ -140,14 +165,9 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveSpacingBeforeAfter(Table table)
         {
-            foreach (Cell cell in table.Range.Cells)
-            {
-                foreach (Paragraph para in cell.Range.Paragraphs)
-                {
-                    para.Format.SpaceBefore = 0f;
-                    para.Format.SpaceAfter = 0f;
-                }
-            }
+            var format = table.Range.ParagraphFormat;
+            format.SpaceBefore = 0f;
+            format.SpaceAfter = 0f;
         }
 
         /// <summary>
@@ -188,15 +208,10 @@ namespace Word.Modules
         /// </summary>
         private static void ResetPaginationSettings(Table table)
         {
-            foreach (Cell cell in table.Range.Cells)
-            {
-                foreach (Paragraph para in cell.Range.Paragraphs)
-                {
-                    para.Format.KeepWithNext = 0;       // Disable Keep with next
-                    para.Format.KeepTogether = 0;       // Disable Keep lines together
-                    para.Format.PageBreakBefore = 0;    // Disable Page break before
-                }
-            }
+            var format = table.Range.ParagraphFormat;
+            format.KeepWithNext = 0;       // Disable Keep with next
+            format.KeepTogether = 0;       // Disable Keep lines together
+            format.PageBreakBefore = 0;    // Disable Page break before
         }
 
         /// <summary>

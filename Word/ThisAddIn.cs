@@ -10,6 +10,11 @@ namespace Word
         // UI-thread context captured at startup; MCP tools are marshalled onto it.
         private SynchronizationContext uiContext;
 
+        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+        {
+            return new Ribbon();
+        }
+
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             if (SynchronizationContext.Current == null)
