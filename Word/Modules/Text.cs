@@ -224,8 +224,8 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveSpecialIndent(Range range)
         {
+            range.ParagraphFormat.CharacterUnitFirstLineIndent = 0; // non-zero char unit overrides points: clear first
             range.ParagraphFormat.FirstLineIndent = 0f;
-            range.ParagraphFormat.CharacterUnitFirstLineIndent = 0;
         }
 
         /// <summary>

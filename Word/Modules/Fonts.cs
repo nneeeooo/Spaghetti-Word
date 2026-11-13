@@ -179,12 +179,19 @@ namespace Word.Modules
                     find.Execute(Replace: WdReplace.wdReplaceAll);
 
                     // Replace Far East font (e.g., Japanese, Chinese)
-                    find = range.Find;
-                    find.ClearFormatting();
-                    find.Font.NameFarEast = source;
-                    find.Replacement.ClearFormatting();
-                    find.Replacement.Font.NameFarEast = target;
-                    find.Execute(Replace: WdReplace.wdReplaceAll);
+                    try
+                    {
+                        find = range.Find;
+                        find.ClearFormatting();
+                        find.Font.NameFarEast = source;
+                        find.Replacement.ClearFormatting();
+                        find.Replacement.Font.NameFarEast = target;
+                        find.Execute(Replace: WdReplace.wdReplaceAll);
+                    }
+                    catch (System.Runtime.InteropServices.COMException)
+                    {
+                        // East Asian editing is off in Word: skip the Far East pass
+                    }
                 });
             }
             finally

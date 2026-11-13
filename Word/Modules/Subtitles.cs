@@ -11,7 +11,7 @@ namespace Word.Modules
         /// <param name="doc">The document in which paragraph breaks will be replaced. It must be a valid Document object.</param>
         internal static void EncodeParagraphBreaks(Document doc)
         {
-            var find = doc.Content.Find;
+            var find = doc.Range(doc.Content.Start, doc.Content.End - 1).Find; // skip the final paragraph mark
             find.ClearFormatting();
             find.Replacement.ClearFormatting();
 
@@ -22,7 +22,7 @@ namespace Word.Modules
             find.Replacement.Text = "⸻"; // U+2E3B TWO-EM DASH
 
             find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindContinue;
+            find.Wrap = WdFindWrap.wdFindStop; // stay inside the range (final mark excluded)
             find.Format = true; // must be true when using Font settings
             find.MatchCase = false;
             find.MatchWholeWord = false;

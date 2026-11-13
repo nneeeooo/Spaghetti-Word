@@ -125,7 +125,6 @@ namespace Tests.Integration
         }
 
         [TestMethod, TestCategory("Word")]
-        [Ignore("bug: Text RemoveSpecialIndent leaves FirstLineIndent=24 after Prepare(doRemoveSpecianIndent) on char-unit indent")]
         public void Fix6_RemoveSpecialIndent_KeepsLeftIndent()
         {
             var doc = NewDoc();
@@ -145,7 +144,6 @@ namespace Tests.Integration
         }
 
         [TestMethod, TestCategory("Word")]
-        [Ignore("bug: Encode/DecodeParagraphBreaks round trip adds one trailing paragraph mark (final ^p is encoded too); text 3840 -> 3841 chars")]
         public void Fix9_ParagraphBreaks_RoundTrip()
         {
             var doc = NewDoc();
@@ -164,7 +162,6 @@ namespace Tests.Integration
         }
 
         [TestMethod, TestCategory("Word")]
-        [Ignore("bug: Fonts.ReplaceDocumentFont throws COMException on find.Font.NameFarEast = \"Arial\" (Word without East Asian editing); Fonts.cs:184")]
         public void Issue14_ReplaceDocumentFont_ChangesHeader()
         {
             var doc = NewDoc();
