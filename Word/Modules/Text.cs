@@ -6,6 +6,7 @@ using Microsoft.Office.Interop.Word;
 using Document = Microsoft.Office.Interop.Word.Document;
 using Paragraph = Microsoft.Office.Interop.Word.Paragraph;
 
+using Word.Helpers;
 namespace Word.Modules
 {
     internal static class Text
@@ -84,7 +85,7 @@ namespace Word.Modules
             catch (Exception ex)
             {
                 failed = true;
-                MessageBox.Show(
+                UiPrompt.Show(
                      ex.Message,
                      "Error",
                      MessageBoxButtons.OK,
@@ -175,11 +176,9 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveBeforeAfterSpacing(Range range)
         {
-            foreach (Paragraph para in range.Paragraphs)
-            {
-                para.SpaceBefore = 0;
-                para.SpaceAfter = 0;
-            }
+            // one call for the whole range instead of one per paragraph
+            range.ParagraphFormat.SpaceBefore = 0;
+            range.ParagraphFormat.SpaceAfter = 0;
         }
 
         /// <summary>
@@ -187,10 +186,7 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveTabstops(Range range)
         {
-            foreach (Paragraph para in range.Paragraphs)
-            {
-                para.TabStops.ClearAll();
-            }
+            range.ParagraphFormat.TabStops.ClearAll();
         }
 
         /// <summary>

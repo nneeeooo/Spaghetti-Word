@@ -35,35 +35,14 @@ namespace Word.Forms
 
         private void button_KeepWithNext_Click(object sender, EventArgs e)
         {
-            ToggleParagraphFlag("Toggle Keep With Next",
+            ParagraphOps.ToggleParagraphFlag("Toggle Keep With Next",
                 f => f.KeepWithNext,
                 (f, v) => { f.KeepWithNext = v; f.KeepTogether = v; });
         }
 
         private void button_PageBreakBefore_Click(object sender, EventArgs e)
         {
-            ToggleParagraphFlag("Toggle Page Break Before",
-                f => f.PageBreakBefore,
-                (f, v) => f.PageBreakBefore = v);
-        }
-
-        /// <summary>
-        /// Turns a paragraph flag on for the selected paragraphs if any of them lacks it, otherwise off.
-        /// </summary>
-        private static void ToggleParagraphFlag(string undoName, Func<ParagraphFormat, int> get, Action<ParagraphFormat, int> set)
-        {
-            Shared.RunWithUndo(undoName, "Error", () =>
-            {
-                var app = Globals.ThisAddIn.Application;
-                var paragraphs = app.Selection.Paragraphs;
-
-                var shouldEnable = paragraphs.Cast<Paragraph>().Any(p => get(p.Format) != -1);
-
-                foreach (Paragraph p in paragraphs)
-                    set(p.Format, shouldEnable ? -1 : 0);
-
-                app.Activate();
-            });
+            ParagraphOps.TogglePageBreakBefore();
         }
 
         private static void ShowDialog(WdWordDialog dialog)

@@ -430,6 +430,8 @@
     <Compile Include="Modules\SubtitleConvert.cs" />
     <Compile Include="Modules\Subtitles.cs" />
     <Compile Include="Modules\Tables.cs" />
+    <Compile Include="Modules\TablePrepSettings.cs" />
+    <Compile Include="Modules\ParagraphOps.cs" />
     <Compile Include="Modules\Text.cs" />
     <Compile Include="Forms\WordPrepForm.cs">
       <SubType>Form</SubType>
@@ -448,6 +450,13 @@
     <Compile Include="Modules\ImageExtract.cs" />
     <Compile Include="Modules\FontIndex.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
+    <Compile Include="Helpers\UiPrompt.cs" />
+    <Compile Include="Mcp\McpCore.cs" />
+    <Compile Include="Mcp\McpServer.cs" />
+    <Compile Include="Mcp\FormTools.cs" />
+    <Compile Include="Mcp\WordTools.cs" />
+    <Compile Include="Mcp\ActionTools.cs" />
+    <Compile Include="Mcp\McpHost.cs" />
     <Compile Include="Modules\Spotlight.cs" />
     <Compile Include="Forms\SpotlightForm.cs">
       <SubType>Form</SubType>
@@ -493,8 +502,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Ribbon.resx">
-      <DependentUpon>Ribbon.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Ribbon.xml">
+      <LogicalName>Word.Ribbon.xml</LogicalName>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -506,12 +515,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Ribbon.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Ribbon.Designer.cs">
-      <DependentUpon>Ribbon.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Forms\Ribbon.cs" />
     <Compile Include="Modules\Shared.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>

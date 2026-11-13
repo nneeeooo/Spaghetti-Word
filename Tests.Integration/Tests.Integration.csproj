@@ -12,6 +12,7 @@
   <ItemGroup>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.Office.Interop.Word">
       <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Word\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Word.dll</HintPath>
@@ -31,12 +32,15 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
     <PackageReference Include="libse" Version="4.0.12" />
+    <PackageReference Include="System.Text.Json" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\Word\Modules\Shared.cs" Link="Linked\Shared.cs" />
     <Compile Include="..\Word\Modules\Text.cs" Link="Linked\Text.cs" />
     <Compile Include="..\Word\Modules\Tables.cs" Link="Linked\Tables.cs" />
+    <Compile Include="../Word/Modules/TablePrepSettings.cs" Link="Linked/TablePrepSettings.cs" />
+    <Compile Include="../Word/Modules/ParagraphOps.cs" Link="Linked/ParagraphOps.cs" />
     <Compile Include="..\Word\Modules\Spotlight.cs" Link="Linked\Spotlight.cs" />
     <Compile Include="..\Word\Modules\Subtitles.cs" Link="Linked\Subtitles.cs" />
     <Compile Include="..\Word\Modules\SubtitleConvert.cs" Link="Linked\SubtitleConvert.cs" />
@@ -45,6 +49,13 @@
     <Compile Include="..\Word\Modules\Fonts.cs" Link="Linked\Fonts.cs" />
     <Compile Include="..\Word\Modules\FontIndex.cs" Link="Linked\FontIndex.cs" />
     <Compile Include="..\Word\Helpers\RegistryHelper.cs" Link="Linked\RegistryHelper.cs" />
+    <Compile Include="..\Word\Helpers\UiPrompt.cs" Link="Linked\UiPrompt.cs" />
+    <Compile Include="..\Word\Mcp\McpCore.cs" Link="Linked\Mcp\McpCore.cs" />
+    <Compile Include="..\Word\Mcp\McpServer.cs" Link="Linked\Mcp\McpServer.cs" />
+    <Compile Include="..\Word\Mcp\FormTools.cs" Link="Linked\Mcp\FormTools.cs" />
+    <Compile Include="..\Word\Mcp\WordTools.cs" Link="Linked\Mcp\WordTools.cs" />
+    <Compile Include="..\Word\Mcp\ActionTools.cs" Link="Linked\Mcp\ActionTools.cs" />
+    <Compile Include="..\Word\Mcp\McpHost.cs" Link="Linked\Mcp\McpHost.cs" />
     <Content Include="..\samples\*.*" Link="samples\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

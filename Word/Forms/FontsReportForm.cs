@@ -87,7 +87,7 @@ namespace Word.Forms
 
             if (!anyPresent)
             {
-                MessageBox.Show(
+                UiPrompt.Show(
                     "All fonts are missing, nothing will be collected.",
                     "Error",
                     MessageBoxButtons.OK,
@@ -98,7 +98,7 @@ namespace Word.Forms
 
             if (anyMissing)
             {
-                MessageBox.Show(
+                UiPrompt.Show(
                     "Some fonts are missing, they will not be collected.",
                     "Warning",
                     MessageBoxButtons.OK,
