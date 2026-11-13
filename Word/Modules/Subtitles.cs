@@ -44,17 +44,16 @@ namespace Word.Modules
             Shared.ReplaceAll(doc.Content, "⸻", "^p");
         }
 
-        internal static void RemoveExcessiveParagraphs(Application app)
+        internal static void RemoveExcessiveParagraphs(Document doc)
         {
-            // TODO: Figure out why I added this method in the first place, probably fixed some cases. It was most likely made for transcription Docx preparation.
-            var selection = app.Selection;
+            // Collapses blank gaps (4+ empty paragraphs) left after timestamps are removed down to one blank line.
 
             for (var count = 30; count >= 4; count--)
             {
                 var target = string.Concat(Enumerable.Repeat("^p", count));
                 var replacement = "^p^p";
 
-                var find = selection.Find;
+                var find = doc.Content.Find;
                 find.ClearFormatting();
                 find.Replacement.ClearFormatting();
 

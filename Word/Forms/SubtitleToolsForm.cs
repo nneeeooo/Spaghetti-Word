@@ -168,7 +168,7 @@ namespace Word.Forms
                 }
             });
 
-            Subtitles.RemoveExcessiveParagraphs(app);
+            Subtitles.RemoveExcessiveParagraphs(app.ActiveDocument);
         }
 
         private void button_ApplyStyle_Click(object sender, EventArgs e)

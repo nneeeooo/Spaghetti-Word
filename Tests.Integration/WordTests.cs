@@ -210,7 +210,17 @@ namespace Tests.Integration
             Assert.IsFalse(Shared.HasActiveDocument());
             NewDoc();
             Assert.IsTrue(Shared.HasActiveDocument());
+    }
+
+        [TestMethod, TestCategory("Word")]
+        public void Subtitles_RemoveExcessiveParagraphs_CollapsesBlankGaps()
+        {
+            var doc = NewDoc();
+            doc.Content.InsertAfter("a\r\r\r\r\rb"); // 5 paragraph marks between a and b
+
+            Subtitles.RemoveExcessiveParagraphs(doc);
+
+            Assert.AreEqual("a\r\rb", Plain(doc));
         }
     }
 }
-
