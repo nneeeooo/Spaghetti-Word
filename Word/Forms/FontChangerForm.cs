@@ -89,24 +89,6 @@ namespace Word.Forms
             RefreshForm();
         }
 
-        private void button_ChangeFontV2_Click(object sender, EventArgs e)
-        {
-            if (comboBox_SourceFont.SelectedItem == null || comboBox_TargetFont.SelectedItem == null)
-                return;
-
-            var previousTarget = comboBox_TargetFont.SelectedItem.ToString();
-
-            Fonts.ReplaceDocumentFont(
-                comboBox_SourceFont.SelectedItem.ToString(),
-                previousTarget);
-
-            RefreshForm();
-
-            // Select the previous target in the source combo
-            if (comboBox_SourceFont.Items.Contains(previousTarget))
-                comboBox_SourceFont.SelectedItem = previousTarget;
-        }
-
         private void button_SetRTLThaiFont_Click(object sender, EventArgs e)
         {
             ApplyFromCombo(comboBox_ComplexScriptFonts, Fonts.SetGlobalRtlThaiFont);

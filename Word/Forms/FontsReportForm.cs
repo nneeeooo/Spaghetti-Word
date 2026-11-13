@@ -19,11 +19,13 @@ namespace Word.Forms
         {
             var documentFonts = Fonts.GetDocumentFonts();
 
+            var fontIndex = Fonts.BuildFontPathIndex();
+
             var rows = documentFonts
                 .Where(font => !font.StartsWith("@")) // exclude verticals
                 .Select(font =>
                 {
-                    var path = Fonts.GetFontPathFromRegistry(font);
+                    fontIndex.TryGetValue(font, out var path);
 
                     return new FontInfo
                     {
@@ -65,16 +67,14 @@ namespace Word.Forms
 
         private void button_Refresh_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
-            var doc = Globals.ThisAddIn.Application.ActiveDocument;
-            doc.Save();
             LoadFontsData();
         }
 
         private void button_CollectFonts_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             var fontInfos = dataGridView_FontTable.Rows
                 .OfType<DataGridViewRow>()

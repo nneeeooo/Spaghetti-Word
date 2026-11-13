@@ -23,22 +23,14 @@ namespace Word
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
+            // Forms are created on first use by SpawnForm. Creating them here runs at Word startup,
+            // when no document may be open yet (ActiveDocument throws then).
             Instance = this;
-
-            spotlightForm = new SpotlightForm();
-            conversionForm = new WordPrepForm();
-            fontsForm = new FontsReportForm();
-            shortcutsForm = new ShortcutsForm();
-            subsForm = new SubtitleToolsForm();
-            fontChangerForm = new FontChangerForm();
-            aboutForm = new AboutForm();
-            colorPickerForm = new ColorPickerForm();
         }
 
         public static T SpawnForm<T>(ref T form) where T : Form, new()
         {
-            var app = Globals.ThisAddIn.Application;
-            if (app?.ActiveDocument == null)
+            if (!Shared.HasActiveDocument())
                 return form;
 
             if (form == null || form.IsDisposed)
@@ -68,7 +60,22 @@ namespace Word
         }
         private void button_ExtractAllImages_Click(object sender, RibbonControlEventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
+
+            var app = Globals.ThisAddIn.Application;
+            var doc = app.ActiveDocument;
+
+            // An unsaved document has no folder; FullName is just "Document1".
+            if (string.IsNullOrEmpty(doc.Path))
+            {
+                MessageBox.Show(
+                    "Please save the document before extracting images.",
+                    "Extraction Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
 
             // ask for confirmation before extracting all images
             if (MessageBox.Show(
@@ -78,31 +85,16 @@ namespace Word
                     MessageBoxIcon.Question
                 ) == DialogResult.No) return;
 
-            var app = Globals.ThisAddIn.Application;
-            var doc = app.ActiveDocument;
-
             var docxPath = doc.FullName;
-
-            var outputFolder = Path.Combine(
-            Path.GetDirectoryName(docxPath) ?? throw new FileNotFoundException(),
-            Path.GetFileNameWithoutExtension(docxPath) + "_images");
+            var outputFolder = Path.Combine(doc.Path, Path.GetFileNameWithoutExtension(docxPath) + "_images");
+            var closed = false;
 
             try
             {
-                if (string.IsNullOrEmpty(doc.Path))
-                {
-                    MessageBox.Show(
-                        "Please save the document before extracting images.",
-                        "Extraction Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
-                    return;
-                }
-
                 // Save and close the document
                 doc.Save();
-                app.ActiveDocument.Close();
+                doc.Close();
+                closed = true;
 
                 // Wait briefly to ensure file unlock
                 System.Threading.Thread.Sleep(500);
@@ -123,8 +115,9 @@ namespace Word
             }
             finally
             {
-                // Reopen the document
-                app.Documents.Open(docxPath);
+                // Reopen the document, only if we closed it
+                if (closed)
+                    app.Documents.Open(docxPath);
             }
         }
 

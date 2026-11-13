@@ -276,7 +276,7 @@
             this.button_ChangeFontV2.Text = "Change font";
             this.button_ChangeFontV2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button_ChangeFontV2.UseVisualStyleBackColor = true;
-            this.button_ChangeFontV2.Click += new System.EventHandler(this.button_ChangeFontV2_Click);
+            this.button_ChangeFontV2.Click += new System.EventHandler(this.button_ChangeFont_Click);
             // 
             // button_ChangeFont
             // 

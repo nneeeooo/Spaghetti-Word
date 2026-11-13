@@ -44,6 +44,7 @@ namespace Word.Modules
             Shared.EnsurePrintViewAndCloseSplit(app);
 
             var undo = app.UndoRecord;
+            var failed = false;
 
             try
             {
@@ -82,6 +83,7 @@ namespace Word.Modules
             }
             catch (Exception ex)
             {
+                failed = true;
                 MessageBox.Show(
                      ex.Message,
                      "Error",
@@ -93,14 +95,20 @@ namespace Word.Modules
             {
                 if (undo.IsRecordingCustomRecord)
                     undo.EndCustomRecord();
+            }
 
-                // avoid find/replace crash
-                Shared.ApplyGlobally(doc, range =>
-                {
-                    if (doTrimSpaces) TrimSpaces(range);
-                    if (doRemoveTabs) RemoveTabs(range);
-                });
-
+            try
+            {
+                // avoid find/replace crash (outside the undo record)
+                if (!failed)
+                    Shared.ApplyGlobally(doc, range =>
+                    {
+                        if (doTrimSpaces) TrimSpaces(range);
+                        if (doRemoveTabs) RemoveTabs(range);
+                    });
+            }
+            finally
+            {
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
 
@@ -109,22 +117,11 @@ namespace Word.Modules
         }
 
         /// <summary>
-        /// Removes all soft line breaks (manual line breaks) from the specified range and replaces them with spaces.
+        /// Removes all soft line breaks (manual line breaks) from the specified range and replaces them with paragraph breaks.
         /// </summary>
         private static void RemoveSoftbreaks(Range range)
         {
-            var find = range.Find;
-            find.ClearFormatting();
-            find.Replacement.ClearFormatting();
-            find.Text = "^l"; // Soft line break
-            find.Replacement.Text = "^p"; // Replace with paragraph break
-            find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindContinue;
-            find.Format = false;
-            find.MatchCase = false;
-            find.MatchWholeWord = false;
-            find.MatchWildcards = false;
-            find.Execute(Replace: WdReplace.wdReplaceAll);
+            Shared.ReplaceAll(range, "^l", "^p"); // Soft line break -> paragraph break
         }
 
         /// <summary>
@@ -133,18 +130,7 @@ namespace Word.Modules
         private static void RemoveTabs(Range range)
         {
             // Remove all tab characters from the range
-            range.Find.ClearFormatting();
-            range.Find.Replacement.ClearFormatting();
-            range.Find.Text = "\t"; // Tab character
-            range.Find.Replacement.Text = " "; // Replace with nothing
-            range.Find.Forward = true;
-            range.Find.Wrap = WdFindWrap.wdFindContinue;
-            range.Find.Format = false;
-            range.Find.MatchCase = false;
-            range.Find.MatchWholeWord = false;
-            range.Find.MatchWildcards = false;
-            // Execute the find and replace operation
-            range.Find.Execute(Replace: WdReplace.wdReplaceAll);
+            Shared.ReplaceAll(range, "\t", " "); // Tab -> space
         }
 
         /// <summary>
@@ -170,17 +156,7 @@ namespace Word.Modules
         private static void RemoveOptionalHyphens(Range range)
         {
             // pray this this would not crash because find.Execute is fucking garbage
-            var find = range.Find;
-            find.ClearFormatting();
-            find.Text = "^-"; // Word code for optional hyphen
-            find.Replacement.ClearFormatting();
-            find.Replacement.Text = "";
-            find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindContinue;
-            find.Format = false;
-            find.MatchWildcards = false;
-
-            find.Execute(Replace: WdReplace.wdReplaceAll);
+            Shared.ReplaceAll(range, "^-", ""); // Word code for optional hyphen
         }
 
         /// <summary>
@@ -188,7 +164,7 @@ namespace Word.Modules
         /// </summary>
         private static void DisableAutomaticHyphenation()
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             var doc = Globals.ThisAddIn.Application.ActiveDocument;
             doc.AutoHyphenation = false;
@@ -222,21 +198,7 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveColumnBreaks(Document doc)
         {
-            var find = doc.Content.Find;
-            find.ClearFormatting();
-            find.Replacement.ClearFormatting();
-
-            find.Text = "^n";
-            find.Replacement.Text = "";
-
-            find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindContinue;
-            find.Format = false;
-            find.MatchCase = false;
-            find.MatchWholeWord = false;
-            find.MatchWildcards = false;
-
-            find.Execute(Replace: WdReplace.wdReplaceAll);
+            Shared.ReplaceAll(doc.Content, "^n", "");
         }
 
         /// <summary>
@@ -262,9 +224,8 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveSpecialIndent(Range range)
         {
+            range.ParagraphFormat.CharacterUnitFirstLineIndent = 0; // non-zero char unit overrides points: clear first
             range.ParagraphFormat.FirstLineIndent = 0f;
-            range.ParagraphFormat.CharacterUnitFirstLineIndent = 0;
-            range.ParagraphFormat.CharacterUnitLeftIndent = 0;
         }
 
         /// <summary>
@@ -286,8 +247,9 @@ namespace Word.Modules
                 var start = range.Start;
                 var end = range.End;
 
-                // Determine the section at the current position
-                var currentSection = doc.Range(0, start).Sections.Last;
+                // The break's type (continuous / next page) is stored on the section that starts
+                // AFTER the break, not the one it ends. Read it before the break is deleted.
+                var breakType = doc.Range(end, end).Sections.First.PageSetup.SectionStart;
 
                 // Delete the section break
                 var sectionBreakRange = doc.Range(start, end);
@@ -295,7 +257,7 @@ namespace Word.Modules
 
                 // Insert appropriate break
                 var insertRange = doc.Range(start, start);
-                insertRange.InsertBreak(currentSection.PageSetup.SectionStart == WdSectionStart.wdSectionContinuous
+                insertRange.InsertBreak(breakType == WdSectionStart.wdSectionContinuous
                     ? WdBreakType.wdLineBreak
                     : WdBreakType.wdPageBreak); // use line break as approximation for paragraph
 
@@ -401,7 +363,7 @@ namespace Word.Modules
 
             Shared.RunWithUndo("Global Unhide", "Error", () =>
             {
-                if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+                if (!Shared.HasActiveDocument()) return;
 
 
 
@@ -418,9 +380,9 @@ namespace Word.Modules
             var app = Globals.ThisAddIn.Application;
             var doc = Globals.ThisAddIn.Application.ActiveDocument;
 
-            Shared.RunWithUndo("Global Unhide", "Error", () =>
+            Shared.RunWithUndo("Global Hide", "Error", () =>
             {
-                if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+                if (!Shared.HasActiveDocument()) return;
 
 
 
@@ -429,58 +391,6 @@ namespace Word.Modules
                 });
 
                 app.Activate();
-            });
-        }
-
-        // TODO: Review and test this
-        internal static void AutoDtp()
-        {
-            var doc = Globals.ThisAddIn.Application.ActiveDocument;
-
-            var letterNumLiteral = "[A-Za-zА-Яа-яÀ-ÿĀ-ſƀ-ɏΑ-ώЀ-ӿİŞĞÜÇÖışğüçö0-9]";
-            var letterLiteral = "[A-Za-zА-Яа-яÀ-ÿĀ-ſƀ-ɏΑ-ώЀ-ӿİŞĞÜÇÖışğüçö]";
-
-            // REMEMBER: This bullshit crashes when run inside an undo custom record, so we have to run it outside of that context.
-            // i fucking hate word interop
-            //  alawys use find/replace crap outside of undo trash
-
-            Shared.ApplyGlobally(doc, range =>
-            {
-                // 1. Fix " a " -> " a^s"
-                var find = range.Find;
-                find.ClearFormatting();
-                find.Replacement.ClearFormatting();
-                find.Text = $" ({letterNumLiteral}) ";
-                find.Replacement.Text = " \\1^s";
-                find.Forward = true;
-                find.Wrap = WdFindWrap.wdFindContinue;
-                find.Format = false;
-                find.MatchWildcards = true;
-                find.Execute(Replace: WdReplace.wdReplaceAll);
-
-                // 2. Fix ". ab " -> ". ab^s"
-                find = range.Find;
-                find.ClearFormatting();
-                find.Replacement.ClearFormatting();
-                find.Text = $". ({letterLiteral}{letterLiteral}) ";
-                find.Replacement.Text = ". \\1^s";
-                find.Forward = true;
-                find.Wrap = WdFindWrap.wdFindContinue;
-                find.Format = false;
-                find.MatchWildcards = true;
-                find.Execute(Replace: WdReplace.wdReplaceAll);
-
-                // 3. Fix ", ab " -> ", ab^s"
-                find = range.Find;
-                find.ClearFormatting();
-                find.Replacement.ClearFormatting();
-                find.Text = $", ({letterLiteral}{letterLiteral}) ";
-                find.Replacement.Text = ", \\1^s";
-                find.Forward = true;
-                find.Wrap = WdFindWrap.wdFindContinue;
-                find.Format = false;
-                find.MatchWildcards = true;
-                find.Execute(Replace: WdReplace.wdReplaceAll);
             });
         }
     }

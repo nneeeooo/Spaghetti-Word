@@ -14,7 +14,7 @@ namespace Word.Modules
     /// <summary>
     /// Font management utilities for Microsoft Word documents.
     /// </summary>
-    internal static class Fonts
+    internal static partial class Fonts
     {
         /// <summary>
         /// Windows default fonts that are typically present on all installations.
@@ -152,13 +152,15 @@ namespace Word.Modules
 
         internal static void ReplaceDocumentFont(string sourceFont, string targetFont)
         {
+            if (!Shared.HasActiveDocument()) return;
+
             var app = Globals.ThisAddIn.Application;
             var doc = app.ActiveDocument;
 
             var source = sourceFont.TrimStart('@');
             var target = targetFont.TrimStart('@');
 
-            if (doc == null || source == "" || target == "") return;
+            if (source == "" || target == "") return;
 
             var undo = app.UndoRecord;
             if (!undo.IsRecordingCustomRecord)
@@ -166,24 +168,31 @@ namespace Word.Modules
 
             try
             {
-                var range = doc.Content;
+                Shared.ApplyGlobally(doc, range =>
+                {
+                    // Replace Western font
+                    var find = range.Find;
+                    find.ClearFormatting();
+                    find.Font.Name = source;
+                    find.Replacement.ClearFormatting();
+                    find.Replacement.Font.Name = target;
+                    find.Execute(Replace: WdReplace.wdReplaceAll);
 
-                // Replace Western font
-                var find = range.Find;
-                find.ClearFormatting();
-                find.Font.Name = source;
-                find.Replacement.ClearFormatting();
-                find.Replacement.Font.Name = target;
-
-                find.Execute(Replace: WdReplace.wdReplaceAll);
-
-                // Replace Far East font (e.g., Japanese, Chinese)
-                find.ClearFormatting();
-                find.Font.NameFarEast = source;
-                find.Replacement.ClearFormatting();
-                find.Replacement.Font.NameFarEast = target;
-
-                find.Execute(Replace: WdReplace.wdReplaceAll);
+                    // Replace Far East font (e.g., Japanese, Chinese)
+                    try
+                    {
+                        find = range.Find;
+                        find.ClearFormatting();
+                        find.Font.NameFarEast = source;
+                        find.Replacement.ClearFormatting();
+                        find.Replacement.Font.NameFarEast = target;
+                        find.Execute(Replace: WdReplace.wdReplaceAll);
+                    }
+                    catch (System.Runtime.InteropServices.COMException)
+                    {
+                        // East Asian editing is off in Word: skip the Far East pass
+                    }
+                });
             }
             finally
             {
@@ -196,22 +205,39 @@ namespace Word.Modules
         {
             var fonts = new HashSet<string>(StringComparer.CurrentCultureIgnoreCase);
 
+            if (!Shared.HasActiveDocument()) return new List<string>();
             var doc = Globals.ThisAddIn.Application.ActiveDocument;
-            if (doc == null) return new List<string>();
 
             Shared.ApplyGlobally(doc, range =>
             {
-                foreach (Range charRange in range.Characters)
-                {
-                    var latin = charRange.Font.Name?.TrimStart('@');
-                    var asian = charRange.Font.NameFarEast?.TrimStart('@');
-
-                    if (!string.IsNullOrEmpty(latin)) fonts.Add(latin);
-                    if (!string.IsNullOrEmpty(asian)) fonts.Add(asian);
-                }
+                foreach (Paragraph para in range.Paragraphs)
+                    CollectFontNames(para.Range, fonts, 0);
             });
 
             return fonts.OrderBy(f => f, StringComparer.CurrentCultureIgnoreCase).ToList();
+        }
+
+        // Reads the fonts of a range; if it is mixed (empty name), descends paragraph -> words -> characters.
+        private static void CollectFontNames(Range r, HashSet<string> fonts, int level)
+        {
+            var latin = r.Font.Name?.TrimStart('@');
+            var asian = r.Font.NameFarEast?.TrimStart('@');
+
+            var mixed = string.IsNullOrEmpty(latin) || string.IsNullOrEmpty(asian);
+            if (!string.IsNullOrEmpty(latin)) fonts.Add(latin);
+            if (!string.IsNullOrEmpty(asian)) fonts.Add(asian);
+            if (!mixed || level >= 2) return;
+
+            if (level == 0)
+            {
+                foreach (Range word in r.Words)
+                    CollectFontNames(word, fonts, 1);
+            }
+            else
+            {
+                foreach (Range ch in r.Characters)
+                    CollectFontNames(ch, fonts, 2);
+            }
         }
 
         /// <summary>
@@ -235,9 +261,9 @@ namespace Word.Modules
         /// are found or if the document is not accessible.</returns>
         internal static List<string> GetDocumentFonts()
         {
-            var doc = Globals.ThisAddIn.Application.ActiveDocument;
-            if (doc == null)
+            if (!Shared.HasActiveDocument())
                 return new List<string>();
+            var doc = Globals.ThisAddIn.Application.ActiveDocument;
 
             try
             {
@@ -265,41 +291,51 @@ namespace Word.Modules
         }
 
         /// <summary>
-        /// TODO: Review and refactor
         /// Copies the font files used in the active Word document to a _fonts subfolder next to the document.
         /// </summary>
         internal static void CollectFonts(bool collectDefaultFonts)
         {
+            if (!Shared.HasActiveDocument()) return;
+
             var app = Globals.ThisAddIn.Application;
             var doc = app.ActiveDocument;
 
-            // Ensure there is an active document with a valid path
-            if (doc == null || string.IsNullOrEmpty(doc.FullName)) return;
+            // Ensure the document is saved: an unsaved one has no folder (FullName is just "Document1"),
+            // and the _fonts folder would land in Word's current directory.
+            if (string.IsNullOrEmpty(doc.Path))
+            {
+                MessageBox.Show(
+                    "Please save the document before collecting fonts.",
+                    "Document Not Saved",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
 
             // Get the list of fonts used in the document
             var usedFonts = GetDocumentFonts();
             if (usedFonts == null || !usedFonts.Any()) return;
 
             // Prepare the output folder based on the document's path
-            var docxPath = doc.FullName;
-
             var outputFolder = Path.Combine(
-                Path.GetDirectoryName(docxPath) ?? throw new FileNotFoundException(),
-                Path.GetFileNameWithoutExtension(docxPath) + "_fonts"
+                doc.Path,
+                Path.GetFileNameWithoutExtension(doc.FullName) + "_fonts"
             );
 
             // Find font paths from the registry
             var fontFilesToCopy = new List<string>();
+            var fontIndex = BuildFontPathIndex();
 
             foreach (var fontName in usedFonts)
             {
-                var fontFilePath = GetFontPathFromRegistry(fontName);
-
                 //also check if the font file is windows default, skip those
-                if (!collectDefaultFonts & WindowsDefaultFonts.Contains(fontName))
+                if (!collectDefaultFonts && WindowsDefaultFonts.Contains(fontName))
                 {
                     continue;
                 }
+
+                fontIndex.TryGetValue(fontName, out var fontFilePath);
 
                 if (!string.IsNullOrEmpty(fontFilePath) && File.Exists(fontFilePath))
                 {
@@ -331,7 +367,9 @@ namespace Word.Modules
                 return;
             }
 
-            if (!Directory.Exists(outputFolder))
+            // Only a folder created by this run may be removed if the first copy fails.
+            var createdFolder = !Directory.Exists(outputFolder);
+            if (createdFolder)
                 Directory.CreateDirectory(outputFolder);
 
             // Copy font files to the _fonts subfolder
@@ -351,7 +389,7 @@ namespace Word.Modules
                 {
                     // Show error and clean up if this is the first copy attempt
 
-                    if (firstCopyAttempted && Directory.Exists(outputFolder))
+                    if (createdFolder && firstCopyAttempted && Directory.Exists(outputFolder))
                     {
                         try
                         {
@@ -385,81 +423,6 @@ namespace Word.Modules
                 UseShellExecute = true,
                 Verb = "open"
             });
-        }
-
-        /// <summary>
-        /// TODO: Review and refactor
-        /// Gets the family names of a font file by loading it into a PrivateFontCollection.
-        /// </summary>
-        private static List<string> GetFontFamilyNamesFromFile(string fontFilePath)
-        {
-            // magick code
-            // pray it works
-            // seems to work fine for TTC also
-            // need to test with other fonts than Cambria Math and Cambria
-
-            var familyNames = new List<string>();
-
-            if (!File.Exists(fontFilePath))
-                return familyNames;
-
-            try
-            {
-                using (var pfc = new PrivateFontCollection())
-                {
-                    pfc.AddFontFile(fontFilePath);
-                    familyNames.AddRange(pfc.Families.Select(f => f.Name));
-                }
-            }
-            catch
-            {
-            }
-
-            return familyNames;
-        }
-
-        /// <summary>
-        /// Gets the font file path from the Windows registry based on the font name.
-        /// </summary>
-        internal static string GetFontPathFromRegistry(string fontName)
-        {
-            var seenPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var fontsFolder = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
-
-            var registrySources = new[]
-            {
-                new { Hive = Registry.CurrentUser, Path = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" },
-                new { Hive = Registry.LocalMachine, Path = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" }
-            };
-
-            foreach (var source in registrySources)
-            {
-                using (var fontsKey = source.Hive.OpenSubKey(source.Path))
-                {
-                    if (fontsKey == null)
-                        continue;
-
-                    foreach (var valueName in fontsKey.GetValueNames())
-                    {
-                        var regValue = fontsKey.GetValue(valueName) as string;
-                        if (string.IsNullOrEmpty(regValue))
-                            continue;
-
-                        var fontPath = regValue;
-                        if (!Path.IsPathRooted(fontPath))
-                            fontPath = Path.Combine(fontsFolder, fontPath);
-
-                        if (!File.Exists(fontPath) || !seenPaths.Add(fontPath))
-                            continue;
-
-                        var fontNames = GetFontFamilyNamesFromFile(fontPath);
-                        if (fontNames.Any(name => string.Equals(name, fontName, StringComparison.OrdinalIgnoreCase)))
-                            return fontPath;
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Tests.Integration</RootNamespace>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>$(DefineConstants);UseOfficeInterop</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.Office.Interop.Word">
+      <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Word\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="office">
+      <HintPath>C:\Windows\assembly\GAC_MSIL\office\15.0.0.0__71e9bce111e9429c\OFFICE.DLL</HintPath>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.3" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
+    <PackageReference Include="libse" Version="4.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Word\Modules\Shared.cs" Link="Linked\Shared.cs" />
+    <Compile Include="..\Word\Modules\Text.cs" Link="Linked\Text.cs" />
+    <Compile Include="..\Word\Modules\Tables.cs" Link="Linked\Tables.cs" />
+    <Compile Include="..\Word\Modules\Spotlight.cs" Link="Linked\Spotlight.cs" />
+    <Compile Include="..\Word\Modules\Subtitles.cs" Link="Linked\Subtitles.cs" />
+    <Compile Include="..\Word\Modules\SubtitleConvert.cs" Link="Linked\SubtitleConvert.cs" />
+    <Compile Include="..\Word\Modules\Images.cs" Link="Linked\Images.cs" />
+    <Compile Include="..\Word\Modules\ImageExtract.cs" Link="Linked\ImageExtract.cs" />
+    <Compile Include="..\Word\Modules\Fonts.cs" Link="Linked\Fonts.cs" />
+    <Compile Include="..\Word\Modules\FontIndex.cs" Link="Linked\FontIndex.cs" />
+    <Compile Include="..\Word\Helpers\RegistryHelper.cs" Link="Linked\RegistryHelper.cs" />
+    <Content Include="..\samples\*.*" Link="samples\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

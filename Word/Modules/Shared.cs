@@ -101,15 +101,6 @@ namespace Word.Modules
             {
                 action(endnote.Range);
             }
-
-            // Lists
-            // TODO: Figure out why it doesn't work sometimes
-            foreach (List list in doc.Lists)
-            {
-                var range = list.Range;
-
-                action(range);
-            }
         }
 
         /// <summary>
@@ -206,19 +197,20 @@ namespace Word.Modules
         /// <summary>
         /// Wrapper for running an action under an undo record in Word.
         /// </summary>
-        internal static void RunWithUndo(string undoRecordName, string errorTitle, Action action)
+        internal static void RunWithUndo(string undoRecordName, string errorTitle, Action action, bool freezeScreen = false)
         {
-            // TODO: improve
-            // 1. add error message prexif arg
-            // 2. add toggle for screen updating
-            // 3. use this wrapper in conversion classes to avoid code duplication
+            if (!HasActiveDocument()) return;
+
             var app = Globals.ThisAddIn.Application;
-            if (app == null || app.ActiveDocument == null) return;
-
             var undo = app.UndoRecord;
+            if (freezeScreen) app.ScreenUpdating = false;
 
+            var startedUndo = false;
             if (!undo.IsRecordingCustomRecord)
+            {
                 undo.StartCustomRecord(undoRecordName);
+                startedUndo = true;
+            }
 
             try
             {
@@ -235,7 +227,7 @@ namespace Word.Modules
             }
             finally
             {
-                if (undo.IsRecordingCustomRecord)
+                if (startedUndo && undo.IsRecordingCustomRecord)
                     undo.EndCustomRecord();
 
                 GC.Collect();
@@ -246,6 +238,37 @@ namespace Word.Modules
             }
         }
 
-        // TODO: implement some common null-checking methods to avoid repetitive null checks in the code
+        /// <summary>
+        /// Replaces all occurrences of <paramref name="find"/> in the range (plain text or wildcards, case-insensitive).
+        /// Returns true if anything was replaced.
+        /// </summary>
+        internal static bool ReplaceAll(Range range, string find, string replace, bool wildcards = false)
+        {
+            var f = range.Find;
+            f.ClearFormatting();
+            f.Replacement.ClearFormatting();
+
+            f.Text = find;
+            f.Replacement.Text = replace;
+
+            f.Forward = true;
+            f.Wrap = WdFindWrap.wdFindContinue;
+            f.Format = false;
+            f.MatchCase = false;
+            f.MatchWholeWord = false;
+            f.MatchWildcards = wildcards;
+
+            return f.Execute(Replace: WdReplace.wdReplaceAll);
+        }
+
+        /// <summary>
+        /// True when Word has an open document. Use this instead of <c>ActiveDocument == null</c>:
+        /// <c>Application.ActiveDocument</c> throws a COMException when no document is open, it never returns null.
+        /// </summary>
+        internal static bool HasActiveDocument()
+        {
+            var app = Globals.ThisAddIn.Application;
+            return app != null && app.Documents.Count > 0;
+        }
     }
 }
