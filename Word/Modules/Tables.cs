@@ -70,8 +70,10 @@ namespace Word.Modules
                 {
                     Shared.ApplyGlobally(doc, range =>
                     {
-                        foreach (Table table in range.Tables)
-                            ProcessTable(table);
+                        // Index loop, Count re-read each pass: changing a table can make Word split it in two,
+                        // and a foreach over the Tables snapshot would miss the new half.
+                        for (var i = 1; i <= range.Tables.Count; i++)
+                            ProcessTable(range.Tables[i]);
                     });
                 }
             }

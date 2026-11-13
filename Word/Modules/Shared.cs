@@ -101,15 +101,6 @@ namespace Word.Modules
             {
                 action(endnote.Range);
             }
-
-            // Lists
-            // TODO: Figure out why it doesn't work sometimes
-            foreach (List list in doc.Lists)
-            {
-                var range = list.Range;
-
-                action(range);
-            }
         }
 
         /// <summary>
