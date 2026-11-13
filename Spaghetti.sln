@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoConverter", "VideoConv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{F7616BFE-F5D4-40D9-BDB6-7838ACC10C9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Integration", "Tests.Integration\Tests.Integration.csproj", "{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{F7616BFE-F5D4-40D9-BDB6-7838ACC10C9D}.Release|x64.Build.0 = Release|Any CPU
 		{F7616BFE-F5D4-40D9-BDB6-7838ACC10C9D}.Release|x86.ActiveCfg = Release|Any CPU
 		{F7616BFE-F5D4-40D9-BDB6-7838ACC10C9D}.Release|x86.Build.0 = Release|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Debug|x64.Build.0 = Debug|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Debug|x86.Build.0 = Debug|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Release|x64.ActiveCfg = Release|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Release|x64.Build.0 = Release|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Release|x86.ActiveCfg = Release|Any CPU
+		{0CBCEFC9-2B68-42EA-93F7-D8656943DDBB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
