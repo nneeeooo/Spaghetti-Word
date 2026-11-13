@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+  <ribbon>
+    <tabs>
+      <tab id="tabSpaghetti" label="Spaghetti">
+        <group id="groupUtilities" label="Utilities">
+          <button id="button2" label="About Spaghetti" size="large" showLabel="true" getImage="GetImage" tag="Etherbrian_Webuosities_Crossing1" onAction="button2_Click" />
+          <button id="button_ExtractAllImages" label="Extract All Images" size="large" getImage="GetImage" tag="Folder_Transfer_32x32" onAction="button_ExtractAllImages_Click" />
+          <button id="button_SubtitleTools" label="Subtitle Tools" size="large" getImage="GetImage" tag="video__1" onAction="button_SubtitleTools_Click" />
+          <button id="button_ColorPicker" label="Color Picker" size="large" getImage="GetImage" tag="_32_x_32___BMP__4_bit_" onAction="button_ColorPicker_Click" />
+          <toggleButton id="toggleButton_Mcp" label="MCP" size="large" screentip="MCP server" supertip="Start/stop the local MCP server so an AI client can drive Word. Off by default." getPressed="Mcp_GetPressed" onAction="toggleButton_Mcp_Click" />
+        </group>
+        <group id="group1" label="Fonts">
+          <button id="button_FontManager" label="Fonts Report" size="large" getImage="GetImage" tag="font_tt_0" onAction="button_FontChecker_Click" />
+          <button id="button_FontChanger" label="Font Changer" size="large" getImage="GetImage" tag="Font_slide_32x32" onAction="button_FontChanger_Click" />
+        </group>
+        <group id="groupDtpAndPrep" label="DTP and Prep">
+          <button id="buttonHLForm" label="DTP Spotlight" size="large" getImage="GetImage" tag="Lamp_32x321" onAction="buttonHLForm_Click" />
+          <button id="buttonConversionForm" label="Word Prep" size="large" getImage="GetImage" tag="abc1_BMP__8_bit___3__32x32" onAction="buttonConversionForm_Click" />
+          <button id="button_Shortcuts" label="Shortcuts" size="large" getImage="GetImage" tag="Regedit_32x32_0" onAction="button_Shortcuts_Click" />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+  <contextMenus>
+    <contextMenu idMso="ContextMenuTextTable">
+      <button id="fixTable_TextTable" label="Fix table" onAction="FixTable_Click" />
+      <checkBox id="pbb_TextTable" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+    </contextMenu>
+    <contextMenu idMso="ContextMenuTableWhole">
+      <button id="fixTable_TableWhole" label="Fix table" onAction="FixTable_Click" />
+    </contextMenu>
+    <contextMenu idMso="ContextMenuText">
+      <checkBox id="pbb_Text" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+    </contextMenu>
+    <contextMenu idMso="ContextMenuList">
+      <checkBox id="pbb_List" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+    </contextMenu>
+    <contextMenu idMso="ContextMenuHeading">
+      <checkBox id="pbb_Heading" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSpell">
+      <checkBox id="pbb_Spell" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+    </contextMenu>
+    <contextMenu idMso="ContextMenuGrammar">
+      <checkBox id="pbb_Grammar" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+    </contextMenu>
+  </contextMenus>
+</customUI>
