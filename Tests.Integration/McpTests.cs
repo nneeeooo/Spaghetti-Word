@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -93,7 +92,6 @@ namespace Tests.Integration
             {
                 Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json")
             };
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _server.Token);
             var resp = _http.SendAsync(req).Result;
             Assert.AreEqual(200, (int)resp.StatusCode);
             return (JsonObject)JsonNode.Parse(resp.Content.ReadAsStringAsync().Result);
@@ -263,16 +261,6 @@ namespace Tests.Integration
             Tool("form_close", new JsonObject { ["form"] = "fake" });
             Assert.IsFalse((bool)Tool("form_list", null)["forms"][0]["open"]);
             Tool("form_open", new JsonObject { ["form"] = "nonexistent" }, expectError: true);
-        }
-
-        [TestMethod]
-        public void Auth_Enforced_OverRealHttp()
-        {
-            var req = new HttpRequestMessage(HttpMethod.Post, _server.Url)
-            {
-                Content = new StringContent("{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"ping\"}", Encoding.UTF8, "application/json")
-            };
-            Assert.AreEqual(401, (int)_http.SendAsync(req).Result.StatusCode);
         }
 
         /// <summary>Stand-in for an add-in form, created on the UI thread by the registry provider.</summary>

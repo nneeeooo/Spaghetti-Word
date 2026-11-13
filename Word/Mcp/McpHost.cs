@@ -51,7 +51,6 @@ namespace Word.Mcp
                 var info = new JsonObject
                 {
                     ["url"] = s.Url,
-                    ["token"] = s.Token,
                     ["pid"] = System.Diagnostics.Process.GetCurrentProcess().Id
                 };
                 File.WriteAllText(InfoPath, info.ToJsonString());

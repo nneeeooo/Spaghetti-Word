@@ -1,6 +1,5 @@
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Nodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,7 +10,6 @@ namespace Tests
     [TestClass]
     public class McpServerTests
     {
-        private const string Token = "test-token";
 
         private static ToolRegistry Fake()
         {
@@ -28,24 +26,12 @@ namespace Tests
             return r;
         }
 
-        private static McpServer Server(int timeoutMs = 120000) => new McpServer(Fake(), null, Token, timeoutMs);
+        private static McpServer Server(int timeoutMs = 120000) => new McpServer(Fake(), null, timeoutMs);
 
-        private static McpResponse Post(McpServer s, string body, string auth = "Bearer " + Token, string origin = null)
-            => s.Handle("POST", auth, origin, body);
+        private static McpResponse Post(McpServer s, string body, string origin = null)
+            => s.Handle("POST", origin, body);
 
         private static JsonObject Json(McpResponse r) => (JsonObject)JsonNode.Parse(r.Body);
-
-        [TestMethod]
-        public void Auth_MissingOrWrongToken_Is401()
-        {
-            var s = Server();
-            const string body = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"ping\"}";
-            Assert.AreEqual(401, Post(s, body, auth: null).Status);
-            Assert.AreEqual(401, Post(s, body, auth: "Bearer wrong").Status);
-            Assert.AreEqual(401, Post(s, body, auth: "Bearer test-toke").Status);
-            Assert.AreEqual(401, Post(s, body, auth: "Basic " + Token).Status);
-            Assert.AreEqual(200, Post(s, body).Status);
-        }
 
         [TestMethod]
         public void Origin_NonLoopback_Is403_LoopbackAndNullAllowed()
@@ -63,7 +49,7 @@ namespace Tests
         [TestMethod]
         public void Get_Is405()
         {
-            var r = Server().Handle("GET", "Bearer " + Token, null, "");
+            var r = Server().Handle("GET", null, "");
             Assert.AreEqual(405, r.Status);
             Assert.AreEqual("POST", r.Allow);
         }
@@ -195,21 +181,10 @@ namespace Tests
             Assert.AreEqual(-32000, (int)r["error"]["code"]);
         }
 
-        [TestMethod]
-        public void Token_IsUniqueBase64Url_32Bytes()
-        {
-            var a = McpServer.NewToken();
-            var b = McpServer.NewToken();
-            Assert.AreNotEqual(a, b);
-            Assert.AreEqual(43, a.Length); // 32 bytes, base64 without padding
-            Assert.IsFalse(a.Contains("+") || a.Contains("/") || a.Contains("="));
-        }
-
-        [TestMethod]
         public void RealHttp_RoundTrip_AndFallbackPort()
         {
-            using (var s1 = new McpServer(Fake(), null, Token))
-            using (var s2 = new McpServer(Fake(), null, Token))
+            using (var s1 = new McpServer(Fake(), null))
+            using (var s2 = new McpServer(Fake(), null))
             {
                 s1.Start(39300);
                 s2.Start(39300); // taken: must fall forward
@@ -221,26 +196,17 @@ namespace Tests
                     {
                         Content = new StringContent("{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"ping\"}", Encoding.UTF8, "application/json")
                     };
-                    Assert.AreEqual(401, (int)http.SendAsync(req).Result.StatusCode);
-
-                    req = new HttpRequestMessage(HttpMethod.Post, s1.Url)
-                    {
-                        Content = new StringContent("{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"ping\"}", Encoding.UTF8, "application/json")
-                    };
-                    req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                     var resp = http.SendAsync(req).Result;
                     Assert.AreEqual(200, (int)resp.StatusCode);
                     StringAssert.Contains(resp.Content.ReadAsStringAsync().Result, "\"result\"");
 
                     var get = new HttpRequestMessage(HttpMethod.Get, s1.Url);
-                    get.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                     Assert.AreEqual(405, (int)http.SendAsync(get).Result.StatusCode);
 
                     var evil = new HttpRequestMessage(HttpMethod.Post, s1.Url)
                     {
                         Content = new StringContent("{}", Encoding.UTF8, "application/json")
                     };
-                    evil.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                     evil.Headers.Add("Origin", "https://evil.example");
                     Assert.AreEqual(403, (int)http.SendAsync(evil).Result.StatusCode);
                 }

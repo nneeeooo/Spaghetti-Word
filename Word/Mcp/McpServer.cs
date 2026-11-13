@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -17,7 +16,7 @@ namespace Word.Mcp
 
     /// <summary>
     /// Hand-rolled MCP "Streamable HTTP" server (JSON responses only, stateless): POST JSON-RPC 2.0 to /mcp/.
-    /// Loopback only. Bearer token required. Tools run on the captured UI synchronization context.
+    /// Loopback only. Tools run on the captured UI synchronization context.
     /// Free of Office interop so it can be unit tested without Word.
     /// </summary>
     internal sealed class McpServer : IDisposable
@@ -31,23 +30,14 @@ namespace Word.Mcp
         private HttpListener _listener;
         private Thread _thread;
 
-        public string Token { get; }
         public int Port { get; private set; }
         public string Url => $"http://127.0.0.1:{Port}/mcp/";
 
-        public McpServer(ToolRegistry registry, SynchronizationContext ui, string token = null, int timeoutMs = 120000)
+        public McpServer(ToolRegistry registry, SynchronizationContext ui, int timeoutMs = 120000)
         {
             _registry = registry;
             _ui = ui;
             _timeoutMs = timeoutMs;
-            Token = token ?? NewToken();
-        }
-
-        public static string NewToken()
-        {
-            var b = new byte[32];
-            using (var rng = RandomNumberGenerator.Create()) rng.GetBytes(b);
-            return Convert.ToBase64String(b).TrimEnd('=').Replace('+', '-').Replace('/', '_');
         }
 
         /// <summary>Starts listening on the first free port from <paramref name="preferredPort"/>.</summary>
@@ -111,7 +101,7 @@ namespace Word.Mcp
                     }
                     using (var sr = new StreamReader(req.InputStream, Encoding.UTF8)) body = sr.ReadToEnd();
                 }
-                Write(ctx, Handle(req.HttpMethod, req.Headers["Authorization"], req.Headers["Origin"], body));
+                Write(ctx, Handle(req.HttpMethod, req.Headers["Origin"], body));
             }
             catch (Exception)
             {
@@ -137,10 +127,9 @@ namespace Word.Mcp
 
         // ---- transport-independent core (unit tested directly) ----
 
-        internal McpResponse Handle(string method, string authorization, string origin, string body)
+        internal McpResponse Handle(string method, string origin, string body)
         {
             if (!OriginAllowed(origin)) return new McpResponse { Status = 403, Body = "" };
-            if (!AuthOk(authorization)) return new McpResponse { Status = 401, Body = "" };
             if (!string.Equals(method, "POST", StringComparison.OrdinalIgnoreCase))
                 return new McpResponse { Status = 405, Body = "", Allow = "POST" };
 
@@ -171,21 +160,6 @@ namespace Word.Mcp
                 : new McpResponse { Status = 200, Body = one.ToJsonString() };
         }
 
-        internal bool AuthOk(string header)
-        {
-            const string prefix = "Bearer ";
-            if (string.IsNullOrEmpty(header) || !header.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return false;
-            return FixedTimeEquals(header.Substring(prefix.Length).Trim(), Token);
-        }
-
-        private static bool FixedTimeEquals(string given, string expected)
-        {
-            var x = Encoding.UTF8.GetBytes(given ?? "");
-            var y = Encoding.UTF8.GetBytes(expected ?? "");
-            var diff = x.Length ^ y.Length;
-            for (var i = 0; i < y.Length; i++) diff |= (i < x.Length ? x[i] : 0) ^ y[i];
-            return diff == 0;
-        }
 
         /// <summary>DNS-rebinding guard: an Origin header, when present, must be null or a loopback host.</summary>
         internal static bool OriginAllowed(string origin)

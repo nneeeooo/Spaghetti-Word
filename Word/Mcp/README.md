@@ -15,24 +15,24 @@ An embedded [Model Context Protocol](https://modelcontextprotocol.io) server let
 On start the add-in writes `%LOCALAPPDATA%\Spaghetti\mcp.json` and deletes it on stop:
 
 ```json
-{"url":"http://127.0.0.1:39181/mcp/","token":"<random>","pid":1234}
+{"url":"http://127.0.0.1:39181/mcp/","pid":1234}
 ```
 
-The token is 32 random bytes (base64url) and **changes on every Word start**, so re-register after restarting Word.
 
 ## Register with Claude Code
 
-Take `url` and `token` from `mcp.json`:
+Take `url` from `mcp.json`:
 
 ```
-claude mcp add --transport http spaghetti-word http://127.0.0.1:39181/mcp/ --header "Authorization: Bearer <token>"
+claude mcp add --transport http spaghetti-word http://127.0.0.1:39181/mcp/
 ```
 
-If the port in `mcp.json` is not 39181, use that URL. To update the token: `claude mcp remove spaghetti-word`, then add again.
+If the port in `mcp.json` is not 39181, use that URL.
 
 ## Security
 
-- Every request needs `Authorization: Bearer <token>` (constant-time compare), otherwise 401.
+- WARNING: there is no authentication. Any local process can drive Word while MCP is on. It is off by default.
+
 - A request with an `Origin` header that is not `null`/localhost/127.0.0.1 is rejected (403): DNS-rebinding guard.
 - `GET /mcp/` returns 405.
 - No script or code evaluation. Only the fixed tools and actions below exist.
