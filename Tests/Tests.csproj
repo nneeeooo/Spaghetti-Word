@@ -6,17 +6,24 @@
     <IsPackable>false</IsPackable>
     <RootNamespace>Tests</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MSTest.TestFramework" Version="3.6.3" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.6.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
     <PackageReference Include="libse" Version="4.0.12" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Word project is VSTO (Interop), so only the interop-free converter is linked. -->
     <Compile Include="..\Word\Modules\SubtitleConvert.cs" Link="Linked\SubtitleConvert.cs" />
+    <Compile Include="..\Word\Modules\ImageExtract.cs" Link="Linked\ImageExtract.cs" />
+    <Compile Include="..\Word\Modules\FontIndex.cs" Link="Linked\FontIndex.cs" />
+    <Compile Include="..\Word\Helpers\RegistryHelper.cs" Link="Linked\RegistryHelper.cs" />
     <Content Include="..\samples\*.*" Link="samples\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

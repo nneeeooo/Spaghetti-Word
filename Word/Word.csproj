@@ -445,6 +445,8 @@
       <DependentUpon>FontsReportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\Images.cs" />
+    <Compile Include="Modules\ImageExtract.cs" />
+    <Compile Include="Modules\FontIndex.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Modules\Spotlight.cs" />
     <Compile Include="Forms\SpotlightForm.cs">
