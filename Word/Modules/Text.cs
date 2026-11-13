@@ -188,7 +188,7 @@ namespace Word.Modules
         /// </summary>
         private static void DisableAutomaticHyphenation()
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             var doc = Globals.ThisAddIn.Application.ActiveDocument;
             doc.AutoHyphenation = false;
@@ -286,8 +286,9 @@ namespace Word.Modules
                 var start = range.Start;
                 var end = range.End;
 
-                // Determine the section at the current position
-                var currentSection = doc.Range(0, start).Sections.Last;
+                // The break's type (continuous / next page) is stored on the section that starts
+                // AFTER the break, not the one it ends. Read it before the break is deleted.
+                var breakType = doc.Range(end, end).Sections.First.PageSetup.SectionStart;
 
                 // Delete the section break
                 var sectionBreakRange = doc.Range(start, end);
@@ -295,7 +296,7 @@ namespace Word.Modules
 
                 // Insert appropriate break
                 var insertRange = doc.Range(start, start);
-                insertRange.InsertBreak(currentSection.PageSetup.SectionStart == WdSectionStart.wdSectionContinuous
+                insertRange.InsertBreak(breakType == WdSectionStart.wdSectionContinuous
                     ? WdBreakType.wdLineBreak
                     : WdBreakType.wdPageBreak); // use line break as approximation for paragraph
 
@@ -401,7 +402,7 @@ namespace Word.Modules
 
             Shared.RunWithUndo("Global Unhide", "Error", () =>
             {
-                if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+                if (!Shared.HasActiveDocument()) return;
 
 
 
@@ -420,7 +421,7 @@ namespace Word.Modules
 
             Shared.RunWithUndo("Global Unhide", "Error", () =>
             {
-                if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+                if (!Shared.HasActiveDocument()) return;
 
 
 

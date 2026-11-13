@@ -14,7 +14,7 @@ namespace Word.Forms
 
         internal void button_Convert_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             Modules.Text.Prepare(
                 doRemoveSectionBreaks: checkBox_RemoveSectionBreaks.Checked,

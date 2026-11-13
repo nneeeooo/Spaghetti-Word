@@ -152,13 +152,15 @@ namespace Word.Modules
 
         internal static void ReplaceDocumentFont(string sourceFont, string targetFont)
         {
+            if (!Shared.HasActiveDocument()) return;
+
             var app = Globals.ThisAddIn.Application;
             var doc = app.ActiveDocument;
 
             var source = sourceFont.TrimStart('@');
             var target = targetFont.TrimStart('@');
 
-            if (doc == null || source == "" || target == "") return;
+            if (source == "" || target == "") return;
 
             var undo = app.UndoRecord;
             if (!undo.IsRecordingCustomRecord)
@@ -196,8 +198,8 @@ namespace Word.Modules
         {
             var fonts = new HashSet<string>(StringComparer.CurrentCultureIgnoreCase);
 
+            if (!Shared.HasActiveDocument()) return new List<string>();
             var doc = Globals.ThisAddIn.Application.ActiveDocument;
-            if (doc == null) return new List<string>();
 
             Shared.ApplyGlobally(doc, range =>
             {
@@ -235,9 +237,9 @@ namespace Word.Modules
         /// are found or if the document is not accessible.</returns>
         internal static List<string> GetDocumentFonts()
         {
-            var doc = Globals.ThisAddIn.Application.ActiveDocument;
-            if (doc == null)
+            if (!Shared.HasActiveDocument())
                 return new List<string>();
+            var doc = Globals.ThisAddIn.Application.ActiveDocument;
 
             try
             {
@@ -270,22 +272,32 @@ namespace Word.Modules
         /// </summary>
         internal static void CollectFonts(bool collectDefaultFonts)
         {
+            if (!Shared.HasActiveDocument()) return;
+
             var app = Globals.ThisAddIn.Application;
             var doc = app.ActiveDocument;
 
-            // Ensure there is an active document with a valid path
-            if (doc == null || string.IsNullOrEmpty(doc.FullName)) return;
+            // Ensure the document is saved: an unsaved one has no folder (FullName is just "Document1"),
+            // and the _fonts folder would land in Word's current directory.
+            if (string.IsNullOrEmpty(doc.Path))
+            {
+                MessageBox.Show(
+                    "Please save the document before collecting fonts.",
+                    "Document Not Saved",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
 
             // Get the list of fonts used in the document
             var usedFonts = GetDocumentFonts();
             if (usedFonts == null || !usedFonts.Any()) return;
 
             // Prepare the output folder based on the document's path
-            var docxPath = doc.FullName;
-
             var outputFolder = Path.Combine(
-                Path.GetDirectoryName(docxPath) ?? throw new FileNotFoundException(),
-                Path.GetFileNameWithoutExtension(docxPath) + "_fonts"
+                doc.Path,
+                Path.GetFileNameWithoutExtension(doc.FullName) + "_fonts"
             );
 
             // Find font paths from the registry

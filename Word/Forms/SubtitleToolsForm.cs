@@ -188,16 +188,17 @@ namespace Word.Forms
         private void ConvertAndSave(string targetExtension)
         {
             var inputPath = "";
+            var closed = false;
 
             try
             {
-                var doc = Globals.ThisAddIn.Application.ActiveDocument;
-                if (doc == null)
+                if (!Shared.HasActiveDocument())
                 {
                     MessageBox.Show("No active document found.", $"Save {targetExtension.ToUpper()}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
+                var doc = Globals.ThisAddIn.Application.ActiveDocument;
                 var folder = doc.Path;
                 if (string.IsNullOrEmpty(folder))
                 {
@@ -211,10 +212,14 @@ namespace Word.Forms
                 inputPath = doc.FullName;
                 var outputPath = Path.Combine(folder, $"{fileName}.{targetExtension}");
 
+                // Convert before closing: if the text is not valid subtitles this throws,
+                // nothing is written, and the document stays open.
                 var content = doc.Content.Text;
-                doc.Close(false);
-
                 var converted = Subtitles.ConvertFormat(content, targetExtension, inputPath);
+
+                doc.Close(false);
+                closed = true;
+
                 File.WriteAllText(outputPath, converted, new UTF8Encoding(false));
 
                 Globals.ThisAddIn.Application.Documents.Open(outputPath);
@@ -229,8 +234,8 @@ namespace Word.Forms
             {
                 MessageBox.Show($"Error saving {targetExtension.ToUpper()}:\n{ex.Message}", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                // Reopen the original source document if it exists
-                if (!string.IsNullOrEmpty(inputPath) && File.Exists(inputPath))
+                // Reopen the original source document if we closed it
+                if (closed && File.Exists(inputPath))
                     Globals.ThisAddIn.Application.Documents.Open(inputPath);
             }
 

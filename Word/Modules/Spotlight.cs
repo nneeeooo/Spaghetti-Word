@@ -29,10 +29,10 @@ namespace Word.Modules
         )
         {
             // TODO: duplication, refactor with a wrapper later
+            if (!Shared.HasActiveDocument()) return;
+
             var app = Globals.ThisAddIn.Application;
             var doc = app.ActiveDocument;
-
-            if (doc == null) return;
 
             app.ScreenUpdating = false;
 
@@ -89,10 +89,10 @@ namespace Word.Modules
         /// </summary>
         internal static void Clear()
         {
+            if (!Shared.HasActiveDocument()) return;
+
             var app = Globals.ThisAddIn.Application;
             var doc = app.ActiveDocument;
-
-            if (doc == null) return;
 
             app.ScreenUpdating = false;
             var undo = app.UndoRecord;
@@ -228,7 +228,10 @@ namespace Word.Modules
         /// </summary>
         private static void HangingLetters(Range range, WdColorIndex color)
         {
-            var find = range.Find;
+            // Search on a copy: Find moves the range it runs on, and the caller passes
+            // the same range on to Hyphens() and Digits() afterwards.
+            var search = range.Duplicate;
+            var find = search.Find;
             find.ClearFormatting();
             // this works well enough to avoid very heavy forloops inside find/replace caused by huge wildcard range operators
             find.Text = " [! ] ";
@@ -236,11 +239,12 @@ namespace Word.Modules
 
             while (find.Execute())
             {
-                int highlightStart = find.Parent.Start + 1;
+                var highlightStart = search.Start + 1;
                 var highlightEnd = highlightStart + 1;
 
-                var doc = range.Document;
-                var charRange = doc.Range(highlightStart, highlightEnd);
+                // Duplicate keeps the story (header, footnote, textbox); doc.Range() would point into the main text.
+                var charRange = search.Duplicate;
+                charRange.SetRange(highlightStart, highlightEnd);
                 var c = charRange.Text[0];
                 // this is fine solution to avoid long wildcard ranges
                 if (char.IsLetterOrDigit(c))
@@ -248,7 +252,9 @@ namespace Word.Modules
                     charRange.HighlightColorIndex = color;
                 }
 
-                find.Parent.Collapse(WdCollapseDirection.wdCollapseEnd);
+                // Continue from the trailing space, not after it: in "і в" that space
+                // is also the leading space of the next single letter.
+                search.SetRange(highlightEnd, highlightEnd);
             }
         } 
     }

@@ -39,7 +39,7 @@ namespace Word.Forms
         {
             Shared.RunWithUndo("Toggle Keep With Next", "Error", () =>
             {
-                if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+                if (!Shared.HasActiveDocument()) return;
 
                 var app = Globals.ThisAddIn.Application;
 
@@ -65,7 +65,7 @@ namespace Word.Forms
         {
             Shared.RunWithUndo("Toggle Page Break Before", "Error", () =>
             {
-                if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+                if (!Shared.HasActiveDocument()) return;
 
                 var app = Globals.ThisAddIn.Application;
 
@@ -263,7 +263,7 @@ namespace Word.Forms
         
         private void button_GlobalAutofit_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             var app = Globals.ThisAddIn.Application;
             var doc = app.ActiveDocument;
@@ -299,7 +299,7 @@ namespace Word.Forms
 
         private void button_TogglePreview_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             var app = Globals.ThisAddIn.Application;
 
@@ -322,7 +322,7 @@ namespace Word.Forms
 
         private void button_SplitCell_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             var app = Globals.ThisAddIn.Application;
 
@@ -336,28 +336,28 @@ namespace Word.Forms
 
         private void button_SelectionPane_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             Globals.ThisAddIn.Application.CommandBars.ExecuteMso("SelectionPane");
         }
 
         private void button_FormatPane_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             Globals.ThisAddIn.Application.CommandBars.ExecuteMso("ObjectFormatDialog");
         }
 
         private void button_InsertTable_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             Globals.ThisAddIn.Application.Dialogs[WdWordDialog.wdDialogTableInsertTable].Show();
         }
 
         private void button_TableProperties_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             Globals.ThisAddIn.Application.Dialogs[WdWordDialog.wdDialogTableProperties].Show();
 
@@ -365,14 +365,14 @@ namespace Word.Forms
 
         private void button_TableOptions_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             Globals.ThisAddIn.Application.Dialogs[WdWordDialog.wdDialogTableTableOptions].Show();
         }
 
         private void button_StylesPane_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             Globals.ThisAddIn.Application.CommandBars.ExecuteMso("StylesPane");
         }

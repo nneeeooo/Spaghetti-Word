@@ -212,9 +212,9 @@ namespace Word.Modules
             // 1. add error message prexif arg
             // 2. add toggle for screen updating
             // 3. use this wrapper in conversion classes to avoid code duplication
-            var app = Globals.ThisAddIn.Application;
-            if (app == null || app.ActiveDocument == null) return;
+            if (!HasActiveDocument()) return;
 
+            var app = Globals.ThisAddIn.Application;
             var undo = app.UndoRecord;
 
             if (!undo.IsRecordingCustomRecord)
@@ -246,6 +246,14 @@ namespace Word.Modules
             }
         }
 
-        // TODO: implement some common null-checking methods to avoid repetitive null checks in the code
+        /// <summary>
+        /// True when Word has an open document. Use this instead of <c>ActiveDocument == null</c>:
+        /// <c>Application.ActiveDocument</c> throws a COMException when no document is open, it never returns null.
+        /// </summary>
+        internal static bool HasActiveDocument()
+        {
+            var app = Globals.ThisAddIn.Application;
+            return app != null && app.Documents.Count > 0;
+        }
     }
 }

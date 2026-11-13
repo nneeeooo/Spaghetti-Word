@@ -65,7 +65,7 @@ namespace Word.Forms
 
         private void button_Refresh_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             var doc = Globals.ThisAddIn.Application.ActiveDocument;
             doc.Save();
@@ -74,7 +74,7 @@ namespace Word.Forms
 
         private void button_CollectFonts_Click(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.Application == null || Globals.ThisAddIn.Application.ActiveDocument == null) return;
+            if (!Shared.HasActiveDocument()) return;
 
             var fontInfos = dataGridView_FontTable.Rows
                 .OfType<DataGridViewRow>()

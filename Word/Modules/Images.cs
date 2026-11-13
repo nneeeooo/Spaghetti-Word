@@ -70,24 +70,27 @@ namespace Word.Modules
             if (!File.Exists(docxPath))
                 throw new FileNotFoundException("DOCX file not found.", docxPath);
 
-            var wordDoc = WordprocessingDocument.Open(docxPath, false);
-            var mainPart = wordDoc.MainDocumentPart
-                ?? throw new InvalidDataException("Main document part is missing.");
+            // Dispose the package so the file is released before Word reopens it.
+            using (var wordDoc = WordprocessingDocument.Open(docxPath, false))
+            {
+                var mainPart = wordDoc.MainDocumentPart
+                    ?? throw new InvalidDataException("Main document part is missing.");
 
-            var imageParts = mainPart.ImageParts
-                .Concat(mainPart.HeaderParts.SelectMany(h => h.ImageParts))
-                .Concat(mainPart.FooterParts.SelectMany(f => f.ImageParts))
-                .ToList();
+                var imageParts = mainPart.ImageParts
+                    .Concat(mainPart.HeaderParts.SelectMany(h => h.ImageParts))
+                    .Concat(mainPart.FooterParts.SelectMany(f => f.ImageParts))
+                    .ToList();
 
-            if (!imageParts.Any())
-                throw new InvalidDataException("No images found in the document.");
+                if (!imageParts.Any())
+                    throw new InvalidDataException("No images found in the document.");
 
-            Directory.CreateDirectory(outputFolder);
+                Directory.CreateDirectory(outputFolder);
 
-            imageParts
-                .Select((part, index) => (part, index: index + 1))
-                .ToList()
-                .ForEach(x => ExtractImagesByPart(x.part, outputFolder, x.index));
+                imageParts
+                    .Select((part, index) => (part, index: index + 1))
+                    .ToList()
+                    .ForEach(x => ExtractImagesByPart(x.part, outputFolder, x.index));
+            }
         }
 
         /// <summary>

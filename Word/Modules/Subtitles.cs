@@ -15,16 +15,18 @@ namespace Word.Modules
         /// <param name="inputText">Input subtitle string</param>
         /// <param name="targetExtension">Target extension (SRT, VTT)</param>
         /// <param name="sourceFileName">Source filename</param>
-        /// <returns></returns>
+        /// <returns>Converted subtitle text.</returns>
+        /// <exception cref="InvalidDataException">Input is not SRT/VTT, has no cues, or the target is not SRT/VTT.</exception>
         internal static string ConvertFormat(string inputText, string targetExtension, string sourceFileName)
         {
+            // Check WEBVTT first: VTT cues also contain "-->", so the SRT check would catch them.
             SubtitleFormat inputFormat;
-            if (inputText.Contains("-->"))
-                inputFormat = new SubRip();
-            else if (inputText.Contains("WEBVTT"))
+            if (inputText.TrimStart().StartsWith("WEBVTT"))
                 inputFormat = new WebVTT();
+            else if (inputText.Contains("-->"))
+                inputFormat = new SubRip();
             else
-                return "Invalid subtitle format.\nOnly SRT and VTT are supported.";
+                throw new InvalidDataException("Invalid subtitle format.\nOnly SRT and VTT are supported.");
 
             var subtitle = new Subtitle();
             inputFormat.LoadSubtitle(subtitle, new List<string>(
@@ -33,6 +35,9 @@ namespace Word.Modules
                        .Trim()
                        .Split('\n')),
                 sourceFileName);
+
+            if (subtitle.Paragraphs.Count == 0)
+                throw new InvalidDataException("No subtitle cues found in the document.");
 
             SubtitleFormat outputFormat;
             var ext = targetExtension.ToLowerInvariant();
@@ -45,7 +50,7 @@ namespace Word.Modules
                     outputFormat = new SubRip();
                     break;
                 default:
-                    return "Invalid subtitle format.\nOnly SRT and VTT are supported.";
+                    throw new InvalidDataException("Invalid target format.\nOnly SRT and VTT are supported.");
             }
 
             return outputFormat.ToText(subtitle, Path.GetFileName(sourceFileName));
