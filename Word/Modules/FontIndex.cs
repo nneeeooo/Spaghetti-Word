@@ -11,15 +11,10 @@ namespace Word.Modules
     internal static partial class Fonts
     {
         /// <summary>
-        /// TODO: Review and refactor
         /// Gets the family names of a font file by loading it into a PrivateFontCollection.
         /// </summary>
         private static List<string> GetFontFamilyNamesFromFile(string fontFilePath)
         {
-            // magick code
-            // pray it works
-            // seems to work fine for TTC also
-            // need to test with other fonts than Cambria Math and Cambria
 
             var familyNames = new List<string>();
 

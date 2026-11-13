@@ -211,5 +211,20 @@ namespace Tests
             Assert.IsTrue(idx.TryGetValue("Arial", out var path));
             Assert.IsTrue(File.Exists(path));
         }
+
+        [TestMethod]
+        public void CollectionFile_IndexesEveryFamilyInIt()
+        {
+            // cambria.ttc is a TrueType collection: Cambria and Cambria Math live in one file.
+            var ttc = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "cambria.ttc");
+            if (!File.Exists(ttc)) Assert.Inconclusive("cambria.ttc not installed");
+
+            var idx = Word.Modules.Fonts.BuildFontPathIndex();
+
+            Assert.IsTrue(idx.TryGetValue("Cambria", out var a), "Cambria");
+            Assert.IsTrue(idx.TryGetValue("Cambria Math", out var b), "Cambria Math");
+            Assert.AreEqual(ttc, a, true);
+            Assert.AreEqual(ttc, b, true);
+        }
     }
 }
