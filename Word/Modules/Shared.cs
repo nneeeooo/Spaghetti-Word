@@ -217,8 +217,12 @@ namespace Word.Modules
             var app = Globals.ThisAddIn.Application;
             var undo = app.UndoRecord;
 
+            var startedUndo = false;
             if (!undo.IsRecordingCustomRecord)
+            {
                 undo.StartCustomRecord(undoRecordName);
+                startedUndo = true;
+            }
 
             try
             {
@@ -235,7 +239,7 @@ namespace Word.Modules
             }
             finally
             {
-                if (undo.IsRecordingCustomRecord)
+                if (startedUndo && undo.IsRecordingCustomRecord)
                     undo.EndCustomRecord();
 
                 GC.Collect();
@@ -244,6 +248,29 @@ namespace Word.Modules
 
                 app.ScreenUpdating = true;
             }
+        }
+
+        /// <summary>
+        /// Replaces all occurrences of <paramref name="find"/> in the range (plain text or wildcards, case-insensitive).
+        /// Returns true if anything was replaced.
+        /// </summary>
+        internal static bool ReplaceAll(Range range, string find, string replace, bool wildcards = false)
+        {
+            var f = range.Find;
+            f.ClearFormatting();
+            f.Replacement.ClearFormatting();
+
+            f.Text = find;
+            f.Replacement.Text = replace;
+
+            f.Forward = true;
+            f.Wrap = WdFindWrap.wdFindContinue;
+            f.Format = false;
+            f.MatchCase = false;
+            f.MatchWholeWord = false;
+            f.MatchWildcards = wildcards;
+
+            return f.Execute(Replace: WdReplace.wdReplaceAll);
         }
 
         /// <summary>

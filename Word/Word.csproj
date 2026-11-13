@@ -127,27 +127,14 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="AxInterop.WMPLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WMPLib.1.0.0\lib\AxInterop.WMPLib.dll</HintPath>
-    </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=3.3.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.3.3.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml.Framework, Version=3.3.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.Framework.3.3.0\lib\net46\DocumentFormat.OpenXml.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="FFMpegCore, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FFMpegCore.5.2.0\lib\netstandard2.0\FFMpegCore.dll</HintPath>
-    </Reference>
     <Reference Include="Gma.System.MouseKeyHook, Version=5.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MouseKeyHook.5.7.1\lib\net48\Gma.System.MouseKeyHook.dll</HintPath>
-    </Reference>
-    <Reference Include="Instances, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Instances.3.0.1\lib\netstandard2.0\Instances.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.WMPLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WMPLib.1.0.0\lib\Interop.WMPLib.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="libse, Version=4.0.12.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\libse.4.0.12\lib\net48\libse.dll</HintPath>
@@ -334,13 +321,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="UtfUnknown, Version=2.0.0.0, Culture=neutral, PublicKeyToken=90217ce7a23260d4, processorArchitecture=MSIL">
-      <HintPath>..\packages\UTF.Unknown.2.5.1\lib\net40\UtfUnknown.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="zlib.net, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\zlib.net-mutliplatform.1.0.8\lib\netstandard2.0\zlib.net.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -455,7 +436,6 @@
     <Compile Include="Forms\WordPrepForm.Designer.cs">
       <DependentUpon>WordPrepForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\DocPropsHelper.cs" />
     <Compile Include="Modules\Fonts.cs" />
     <Compile Include="Forms\FontsReportForm.cs">
       <SubType>Form</SubType>
@@ -543,223 +523,37 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Find Fast_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Lamp_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Find Fast_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\recycle_bin_full-1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\application_hourglass_small-5.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Cross_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Help 3D_16x16-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\recycle_bin_full-4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\font_adobe-0.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\font_adobe-1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\restrict-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\unbreak_sm.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\regedit_binary-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mail text_16x16-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Etherbrian-Presto-Zap.32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Etherbrian-Squeaky-Clean-Blue-soap.16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Etherbrian-Squeaky-Clean-Blue-soap.32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\media_player_stream_conn1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\regedit-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Services_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Sheet with cubes 2_16x16-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\regedit_file-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\message_empty_tack-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\font_bitmap-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\charmap_w2k-1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\clean_drive-3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\font_opentype-1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\font_tt-0.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\font_opentype-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\kodak_imaging_file-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Etherbrian-Webuosities-Empty.32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\directory_fonts-2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\calendar-3.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\message_file-1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Blank sheet_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Filling forms_16x16-2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\calendar-5.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\diskettes_copy-1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Check mard_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Marking forms_16x16-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mail text_16x16-11.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\server_gear-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Cursor_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Filling forms_16x16-21.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Resize sheet %28H%29_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Etherbrian-System-Error-Snuffed.32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Animals-Chick.32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Etherbrian-Webuosities-Crossing.32.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Folder Transfer_32x32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\3ds_32x32-3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Tip of the Day_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Sync Earth_32x32-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Sheets conflict 2_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\recycle_bin_file.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\INFO_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Text field sheet_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\3D Text_32x32-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Kitchen-Strawberry.16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\mellon 16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\media_player_stream_sun4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\msagent_file-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\mellon 16x161.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Star_16x16-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Animals-Chiken.16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Animals-Chiken.32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Animals-Chick.321.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Animals-Squirrel.32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Daily-Items-White-Rose-1.32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\5370913027089627819.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Resize sheet %28H%29_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Resize sheet %28H%29_16x161.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Deform sheet %28H%29_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Resize sheet %28V%29_16x16.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Pin sheet_16x16-1.png" />
@@ -768,22 +562,7 @@
     <None Include="Resources\message_tack-1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Joy controls %28up%29_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Joy controls %28on%29_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Joy controls %28on%29_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\no-0.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\no2-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\address_book_card_copy-0.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\address_book_card_copy-1.png" />
@@ -792,65 +571,23 @@
     <None Include="Resources\bar_graph-0.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\write_file-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\tools_gear-1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Deform sheet %28V%29_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Deform sheet %28H%29_32x321.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Deform sheet %28H%29_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\camera_vid-0.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\video_-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\package-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\directory_check-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Kitchen-Beer-2.16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\media_player_stream_sun41.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\directory_check-3.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FIRE_16x16.png" />
-    <None Include="Resources\Cursor_16x161.png" />
-    <None Include="Resources\Font slide_16x16.png" />
     <None Include="Resources\Lamp_32x321.png" />
     <None Include="Resources\abc1 BMP %288-bit%29 %281%29 16x16.png" />
-    <None Include="Resources\mouse_trails.ico" />
-    <None Include="Resources\regedit_binary-11.png" />
-    <None Include="Resources\magnifying_glass-1.png" />
-    <None Include="Resources\message_file-11.png" />
-    <None Include="Resources\Sheet print format %28short V%29_16x16.png" />
-    <None Include="Resources\unbreak_sm1.png" />
-    <None Include="Resources\Services_16x161.png" />
-    <None Include="Resources\autocad_16x16-0.png" />
-    <None Include="Resources\tagcleaner_sm.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\note-3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\3ds_32x32-31.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FIRE_32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\calendar-51.png" />
@@ -859,31 +596,10 @@
     <None Include="Resources\search_file_2-1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\frog-dance.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\frog-dance1.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Gray tile_16x16-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Config program_16x16-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gears-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\check-0.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\check-1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Resize sheet %28H%29_16x162.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Mozco-Tools-Brush.16.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\themes-1.png" />
@@ -895,37 +611,16 @@
     <None Include="Resources\calendar-4.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Blank sheet_16x161.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\autocad_16x16-01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gears-11.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Font slide_32x32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\address_book_card_copy-11.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\font_tt-1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Word Document_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Word File_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\w1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Projector sheets_16x16-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Projector_16x16-1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\document-1.png" />
@@ -934,34 +629,7 @@
     <None Include="Resources\video_mk-3.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\executable_script-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\game_mine_1-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\regedit_file-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\directory_check-2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\game_mine_2-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\WordPad_32x32-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Word Document_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Wordpad_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\font_opentype-11.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\clock-0.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\check-11.png" />
@@ -973,49 +641,10 @@
     <None Include="Resources\Regedit_32x32-0.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Smiley face_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BMP %2824-bit%29 %282%29 16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Etherbrian-Webuosities-Full.32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\msg_information-0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Etherbrian-Webuosities-Crossing.321.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ChatGPT Image Feb 12, 2026, 06_48_24 PM.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\32 x 32 - BMP %2832-bit%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\16 x 16 - BMP %2832-bit%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\autocad_32x32-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Gray tile_16x16-11.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\32 x 32 - BMP %284-bit%29.png" />

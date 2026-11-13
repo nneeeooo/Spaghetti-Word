@@ -63,26 +63,6 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _16_x_16___BMP__32_bit_ {
-            get {
-                object obj = ResourceManager.GetObject("16 x 16 - BMP (32-bit)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap _32_x_32___BMP__32_bit_ {
-            get {
-                object obj = ResourceManager.GetObject("32 x 32 - BMP (32-bit)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap _32_x_32___BMP__4_bit_ {
             get {
                 object obj = ResourceManager.GetObject("32 x 32 - BMP (4-bit)", resourceCulture);
@@ -123,29 +103,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap address_book_card_copy_0 {
-            get {
-                object obj = ResourceManager.GetObject("address_book_card_copy-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap address_book_card_copy_1 {
             get {
                 object obj = ResourceManager.GetObject("address_book_card_copy-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap address_book_card_copy_11 {
-            get {
-                object obj = ResourceManager.GetObject("address_book_card_copy-11", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,29 +123,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap autocad_16x16_0 {
-            get {
-                object obj = ResourceManager.GetObject("autocad_16x16-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap autocad_16x16_01 {
             get {
                 object obj = ResourceManager.GetObject("autocad_16x16-01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap autocad_32x32_1 {
-            get {
-                object obj = ResourceManager.GetObject("autocad_32x32-1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -206,16 +146,6 @@ namespace Word.Properties {
         internal static System.Drawing.Bitmap BMP__24_bit___2__16x16 {
             get {
                 object obj = ResourceManager.GetObject("BMP (24-bit) (2) 16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap calendar_3 {
-            get {
-                object obj = ResourceManager.GetObject("calendar-3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -253,89 +183,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap camera_vid_0 {
-            get {
-                object obj = ResourceManager.GetObject("camera_vid-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap catalog_0 {
             get {
                 object obj = ResourceManager.GetObject("catalog-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ChatGPT_Image_Feb_12__2026__06_48_24_PM {
-            get {
-                object obj = ResourceManager.GetObject("ChatGPT Image Feb 12, 2026, 06_48_24 PM", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ChatGPT_Image_Feb_12__2026__06_48_24_PM1 {
-            get {
-                object obj = ResourceManager.GetObject("ChatGPT Image Feb 12, 2026, 06_48_24 PM1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ChatGPT_Image_Feb_12__2026__06_48_24_PM2 {
-            get {
-                object obj = ResourceManager.GetObject("ChatGPT Image Feb 12, 2026, 06_48_24 PM2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ChatGPT_Image_Feb_12__2026__06_48_24_PM3 {
-            get {
-                object obj = ResourceManager.GetObject("ChatGPT Image Feb 12, 2026, 06_48_24 PM3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ChatGPT_Image_Feb_12__2026__06_48_24_PM4 {
-            get {
-                object obj = ResourceManager.GetObject("ChatGPT Image Feb 12, 2026, 06_48_24 PM4", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ChatGPT_Image_Feb_12__2026__06_48_24_PM5 {
-            get {
-                object obj = ResourceManager.GetObject("ChatGPT Image Feb 12, 2026, 06_48_24 PM5", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap check_0 {
-            get {
-                object obj = ResourceManager.GetObject("check-0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -383,16 +233,6 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cross_16x16 {
-            get {
-                object obj = ResourceManager.GetObject("Cross_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Deform_sheet__H__16x16 {
             get {
                 object obj = ResourceManager.GetObject("Deform sheet (H)_16x16", resourceCulture);
@@ -403,49 +243,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Deform_sheet__H__32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Deform sheet (H)_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Deform_sheet__H__32x321 {
-            get {
-                object obj = ResourceManager.GetObject("Deform sheet (H)_32x321", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Deform_sheet__V__16x16 {
             get {
                 object obj = ResourceManager.GetObject("Deform sheet (V)_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap directory_check_1 {
-            get {
-                object obj = ResourceManager.GetObject("directory_check-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap directory_check_2 {
-            get {
-                object obj = ResourceManager.GetObject("directory_check-2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -493,29 +293,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Etherbrian_Webuosities_Crossing_32 {
-            get {
-                object obj = ResourceManager.GetObject("Etherbrian-Webuosities-Crossing.32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Etherbrian_Webuosities_Crossing1 {
             get {
                 object obj = ResourceManager.GetObject("Etherbrian-Webuosities-Crossing1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Filling_forms_16x16_2 {
-            get {
-                object obj = ResourceManager.GetObject("Filling forms_16x16-2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -543,16 +323,6 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap font_adobe_0 {
-            get {
-                object obj = ResourceManager.GetObject("font_adobe-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap font_adobe_1 {
             get {
                 object obj = ResourceManager.GetObject("font_adobe-1", resourceCulture);
@@ -563,49 +333,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap font_bitmap_1 {
-            get {
-                object obj = ResourceManager.GetObject("font_bitmap-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap font_opentype_0 {
-            get {
-                object obj = ResourceManager.GetObject("font_opentype-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap font_opentype_1 {
-            get {
-                object obj = ResourceManager.GetObject("font_opentype-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap font_opentype_11 {
             get {
                 object obj = ResourceManager.GetObject("font_opentype-11", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Font_slide_16x16 {
-            get {
-                object obj = ResourceManager.GetObject("Font slide_16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -643,69 +373,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Lamp_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Lamp_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Lamp_32x321 {
             get {
                 object obj = ResourceManager.GetObject("Lamp_32x321", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap magnifying_glass_1 {
-            get {
-                object obj = ResourceManager.GetObject("magnifying_glass-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Mail_text_16x16_1 {
-            get {
-                object obj = ResourceManager.GetObject("Mail text_16x16-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Mail_text_16x16_11 {
-            get {
-                object obj = ResourceManager.GetObject("Mail text_16x16-11", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Marking_forms_16x16_1 {
-            get {
-                object obj = ResourceManager.GetObject("Marking forms_16x16-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap message_empty_tack_1 {
-            get {
-                object obj = ResourceManager.GetObject("message_empty_tack-1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -723,29 +393,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap message_file_11 {
-            get {
-                object obj = ResourceManager.GetObject("message_file-11", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap message_tack_1 {
             get {
                 object obj = ResourceManager.GetObject("message_tack-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap no_0 {
-            get {
-                object obj = ResourceManager.GetObject("no-0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -783,16 +433,6 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Projector_16x16_1 {
-            get {
-                object obj = ResourceManager.GetObject("Projector_16x16-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Projector_sheets_16x16_1 {
             get {
                 object obj = ResourceManager.GetObject("Projector sheets_16x16-1", resourceCulture);
@@ -813,49 +453,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap regedit_1 {
-            get {
-                object obj = ResourceManager.GetObject("regedit-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Regedit_32x32_0 {
             get {
                 object obj = ResourceManager.GetObject("Regedit_32x32-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap regedit_file_0 {
-            get {
-                object obj = ResourceManager.GetObject("regedit_file-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Resize_sheet__H__16x16 {
-            get {
-                object obj = ResourceManager.GetObject("Resize sheet (H)_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Resize_sheet__H__16x161 {
-            get {
-                object obj = ResourceManager.GetObject("Resize sheet (H)_16x161", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -873,36 +473,6 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Resize_sheet__H__32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Resize sheet (H)_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Resize_sheet__V__16x16 {
-            get {
-                object obj = ResourceManager.GetObject("Resize sheet (V)_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap restrict_0 {
-            get {
-                object obj = ResourceManager.GetObject("restrict-0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap search_file_2_1 {
             get {
                 object obj = ResourceManager.GetObject("search_file_2-1", resourceCulture);
@@ -913,49 +483,9 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap tagcleaner_sm {
-            get {
-                object obj = ResourceManager.GetObject("tagcleaner_sm", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Text_field_sheet_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Text field sheet_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap themes_1 {
             get {
                 object obj = ResourceManager.GetObject("themes-1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Tip_of_the_Day_32x32 {
-            get {
-                object obj = ResourceManager.GetObject("Tip of the Day_32x32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap tools_gear_1 {
-            get {
-                object obj = ResourceManager.GetObject("tools_gear-1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

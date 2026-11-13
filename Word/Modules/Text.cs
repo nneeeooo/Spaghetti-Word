@@ -121,18 +121,7 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveSoftbreaks(Range range)
         {
-            var find = range.Find;
-            find.ClearFormatting();
-            find.Replacement.ClearFormatting();
-            find.Text = "^l"; // Soft line break
-            find.Replacement.Text = "^p"; // Replace with paragraph break
-            find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindContinue;
-            find.Format = false;
-            find.MatchCase = false;
-            find.MatchWholeWord = false;
-            find.MatchWildcards = false;
-            find.Execute(Replace: WdReplace.wdReplaceAll);
+            Shared.ReplaceAll(range, "^l", "^p"); // Soft line break -> paragraph break
         }
 
         /// <summary>
@@ -141,18 +130,7 @@ namespace Word.Modules
         private static void RemoveTabs(Range range)
         {
             // Remove all tab characters from the range
-            range.Find.ClearFormatting();
-            range.Find.Replacement.ClearFormatting();
-            range.Find.Text = "\t"; // Tab character
-            range.Find.Replacement.Text = " "; // Replace with nothing
-            range.Find.Forward = true;
-            range.Find.Wrap = WdFindWrap.wdFindContinue;
-            range.Find.Format = false;
-            range.Find.MatchCase = false;
-            range.Find.MatchWholeWord = false;
-            range.Find.MatchWildcards = false;
-            // Execute the find and replace operation
-            range.Find.Execute(Replace: WdReplace.wdReplaceAll);
+            Shared.ReplaceAll(range, "\t", " "); // Tab -> space
         }
 
         /// <summary>
@@ -178,17 +156,7 @@ namespace Word.Modules
         private static void RemoveOptionalHyphens(Range range)
         {
             // pray this this would not crash because find.Execute is fucking garbage
-            var find = range.Find;
-            find.ClearFormatting();
-            find.Text = "^-"; // Word code for optional hyphen
-            find.Replacement.ClearFormatting();
-            find.Replacement.Text = "";
-            find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindContinue;
-            find.Format = false;
-            find.MatchWildcards = false;
-
-            find.Execute(Replace: WdReplace.wdReplaceAll);
+            Shared.ReplaceAll(range, "^-", ""); // Word code for optional hyphen
         }
 
         /// <summary>
@@ -230,21 +198,7 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveColumnBreaks(Document doc)
         {
-            var find = doc.Content.Find;
-            find.ClearFormatting();
-            find.Replacement.ClearFormatting();
-
-            find.Text = "^n";
-            find.Replacement.Text = "";
-
-            find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindContinue;
-            find.Format = false;
-            find.MatchCase = false;
-            find.MatchWholeWord = false;
-            find.MatchWildcards = false;
-
-            find.Execute(Replace: WdReplace.wdReplaceAll);
+            Shared.ReplaceAll(doc.Content, "^n", "");
         }
 
         /// <summary>
@@ -437,58 +391,6 @@ namespace Word.Modules
                 });
 
                 app.Activate();
-            });
-        }
-
-        // TODO: Review and test this
-        internal static void AutoDtp()
-        {
-            var doc = Globals.ThisAddIn.Application.ActiveDocument;
-
-            var letterNumLiteral = "[A-Za-zА-Яа-яÀ-ÿĀ-ſƀ-ɏΑ-ώЀ-ӿİŞĞÜÇÖışğüçö0-9]";
-            var letterLiteral = "[A-Za-zА-Яа-яÀ-ÿĀ-ſƀ-ɏΑ-ώЀ-ӿİŞĞÜÇÖışğüçö]";
-
-            // REMEMBER: This bullshit crashes when run inside an undo custom record, so we have to run it outside of that context.
-            // i fucking hate word interop
-            //  alawys use find/replace crap outside of undo trash
-
-            Shared.ApplyGlobally(doc, range =>
-            {
-                // 1. Fix " a " -> " a^s"
-                var find = range.Find;
-                find.ClearFormatting();
-                find.Replacement.ClearFormatting();
-                find.Text = $" ({letterNumLiteral}) ";
-                find.Replacement.Text = " \\1^s";
-                find.Forward = true;
-                find.Wrap = WdFindWrap.wdFindContinue;
-                find.Format = false;
-                find.MatchWildcards = true;
-                find.Execute(Replace: WdReplace.wdReplaceAll);
-
-                // 2. Fix ". ab " -> ". ab^s"
-                find = range.Find;
-                find.ClearFormatting();
-                find.Replacement.ClearFormatting();
-                find.Text = $". ({letterLiteral}{letterLiteral}) ";
-                find.Replacement.Text = ". \\1^s";
-                find.Forward = true;
-                find.Wrap = WdFindWrap.wdFindContinue;
-                find.Format = false;
-                find.MatchWildcards = true;
-                find.Execute(Replace: WdReplace.wdReplaceAll);
-
-                // 3. Fix ", ab " -> ", ab^s"
-                find = range.Find;
-                find.ClearFormatting();
-                find.Replacement.ClearFormatting();
-                find.Text = $", ({letterLiteral}{letterLiteral}) ";
-                find.Replacement.Text = ", \\1^s";
-                find.Forward = true;
-                find.Wrap = WdFindWrap.wdFindContinue;
-                find.Format = false;
-                find.MatchWildcards = true;
-                find.Execute(Replace: WdReplace.wdReplaceAll);
             });
         }
     }

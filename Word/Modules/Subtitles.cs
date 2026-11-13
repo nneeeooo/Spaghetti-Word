@@ -91,23 +91,8 @@ namespace Word.Modules
         /// <param name="doc">The document in which paragraph breaks are to be decoded. This parameter must not be null.</param>
         internal static void DecodeParagraphBreaks(Document doc)
         {
-            var find = doc.Content.Find;
-            find.ClearFormatting();
-            find.Replacement.ClearFormatting();
-
-            find.Text = "⸻"; // U+2E3B TWO-EM DASH — matches what we used earlier
-            find.Replacement.Text = "^p"; // restores paragraph break
-
-            find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindContinue;
-            find.Format = false;
-            find.MatchCase = false;
-            find.MatchWholeWord = false;
-            find.MatchWildcards = false;
-            find.MatchSoundsLike = false;
-            find.MatchAllWordForms = false;
-
-            find.Execute(Replace: WdReplace.wdReplaceAll);
+            // U+2E3B TWO-EM DASH, matches what we used earlier; restores paragraph break
+            Shared.ReplaceAll(doc.Content, "⸻", "^p");
         }
 
         internal static void RemoveExcessiveParagraphs(Application app)

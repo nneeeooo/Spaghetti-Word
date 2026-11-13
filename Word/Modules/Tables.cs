@@ -203,39 +203,5 @@ namespace Word.Modules
         {
             table.Borders.Enable = 0;
         }
-
-        /// <summary>
-        /// Copies the width of the selected table cells to the clipboard in mm
-        /// </summary>
-        internal static void CopyCellWidthToClipboard()
-        {
-            var app = Globals.ThisAddIn.Application;
-            var sel = app.Selection;
-
-            if (sel.Cells.Count == 0) return;
-
-            var firstCell = sel.Cells[1];
-            var table = firstCell.Range.Tables[1];
-
-            var minCol = int.MaxValue;
-            var maxCol = int.MinValue;
-
-            // Find min/max column index in selection
-            foreach (Cell cell in sel.Cells)
-            {
-                if (cell.ColumnIndex < minCol) minCol = cell.ColumnIndex;
-                if (cell.ColumnIndex > maxCol) maxCol = cell.ColumnIndex;
-            }
-
-            var totalWidthPt = 0f;
-            // Use Columns collection to get reliable widths
-            for (var i = minCol; i <= maxCol && i <= table.Columns.Count; i++)
-            {
-                totalWidthPt += table.Columns[i].Width;
-            }
-
-            var totalWidthMm = totalWidthPt * 0.3528f;
-            Clipboard.SetText($"{Math.Round(totalWidthMm, 1)} mm");
-        }
     }
 }
