@@ -291,7 +291,6 @@ namespace Word.Modules
         }
 
         /// <summary>
-        /// TODO: Review and refactor
         /// Copies the font files used in the active Word document to a _fonts subfolder next to the document.
         /// </summary>
         internal static void CollectFonts(bool collectDefaultFonts)
@@ -331,7 +330,7 @@ namespace Word.Modules
             foreach (var fontName in usedFonts)
             {
                 //also check if the font file is windows default, skip those
-                if (!collectDefaultFonts & WindowsDefaultFonts.Contains(fontName))
+                if (!collectDefaultFonts && WindowsDefaultFonts.Contains(fontName))
                 {
                     continue;
                 }
@@ -368,7 +367,9 @@ namespace Word.Modules
                 return;
             }
 
-            if (!Directory.Exists(outputFolder))
+            // Only a folder created by this run may be removed if the first copy fails.
+            var createdFolder = !Directory.Exists(outputFolder);
+            if (createdFolder)
                 Directory.CreateDirectory(outputFolder);
 
             // Copy font files to the _fonts subfolder
@@ -388,7 +389,7 @@ namespace Word.Modules
                 {
                     // Show error and clean up if this is the first copy attempt
 
-                    if (firstCopyAttempted && Directory.Exists(outputFolder))
+                    if (createdFolder && firstCopyAttempted && Directory.Exists(outputFolder))
                     {
                         try
                         {
