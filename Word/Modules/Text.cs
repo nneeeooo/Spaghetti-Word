@@ -44,6 +44,7 @@ namespace Word.Modules
             Shared.EnsurePrintViewAndCloseSplit(app);
 
             var undo = app.UndoRecord;
+            var failed = false;
 
             try
             {
@@ -82,6 +83,7 @@ namespace Word.Modules
             }
             catch (Exception ex)
             {
+                failed = true;
                 MessageBox.Show(
                      ex.Message,
                      "Error",
@@ -93,14 +95,20 @@ namespace Word.Modules
             {
                 if (undo.IsRecordingCustomRecord)
                     undo.EndCustomRecord();
+            }
 
-                // avoid find/replace crash
-                Shared.ApplyGlobally(doc, range =>
-                {
-                    if (doTrimSpaces) TrimSpaces(range);
-                    if (doRemoveTabs) RemoveTabs(range);
-                });
-
+            try
+            {
+                // avoid find/replace crash (outside the undo record)
+                if (!failed)
+                    Shared.ApplyGlobally(doc, range =>
+                    {
+                        if (doTrimSpaces) TrimSpaces(range);
+                        if (doRemoveTabs) RemoveTabs(range);
+                    });
+            }
+            finally
+            {
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
 

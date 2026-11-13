@@ -168,24 +168,24 @@ namespace Word.Modules
 
             try
             {
-                var range = doc.Content;
+                Shared.ApplyGlobally(doc, range =>
+                {
+                    // Replace Western font
+                    var find = range.Find;
+                    find.ClearFormatting();
+                    find.Font.Name = source;
+                    find.Replacement.ClearFormatting();
+                    find.Replacement.Font.Name = target;
+                    find.Execute(Replace: WdReplace.wdReplaceAll);
 
-                // Replace Western font
-                var find = range.Find;
-                find.ClearFormatting();
-                find.Font.Name = source;
-                find.Replacement.ClearFormatting();
-                find.Replacement.Font.Name = target;
-
-                find.Execute(Replace: WdReplace.wdReplaceAll);
-
-                // Replace Far East font (e.g., Japanese, Chinese)
-                find.ClearFormatting();
-                find.Font.NameFarEast = source;
-                find.Replacement.ClearFormatting();
-                find.Replacement.Font.NameFarEast = target;
-
-                find.Execute(Replace: WdReplace.wdReplaceAll);
+                    // Replace Far East font (e.g., Japanese, Chinese)
+                    find = range.Find;
+                    find.ClearFormatting();
+                    find.Font.NameFarEast = source;
+                    find.Replacement.ClearFormatting();
+                    find.Replacement.Font.NameFarEast = target;
+                    find.Execute(Replace: WdReplace.wdReplaceAll);
+                });
             }
             finally
             {

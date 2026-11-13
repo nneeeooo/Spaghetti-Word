@@ -62,6 +62,14 @@ namespace Word.Forms
             });
         }
 
+        // Word wildcards: "???" stands for "-->" because ">" is a wildcard token. Cue number is optional (VTT).
+        private static string[] CuePatterns(string br)
+        {
+            const string time = "[0-9:.,]{9,12}";
+            var cue = time + " ??? " + time + br;
+            return new[] { "[0-9]{1,}" + br + cue, cue };
+        }
+
         private void button_HideTS_Click(object sender, EventArgs e)
         {
             Modules.Text.GlobalUnhide();
@@ -77,15 +85,7 @@ namespace Word.Forms
             {
                 Subtitles.EncodeParagraphBreaks(doc); // encode paragraph breaks before hiding timestamps
 
-                var findPatterns = new[]
-                {
-                                    @"[0-9][0-9][0-9][0-9][0-9][0-9]⸻??:??:??,??? ??? ??:??:??,???⸻",
-                                    @"[0-9][0-9][0-9][0-9][0-9]⸻??:??:??,??? ??? ??:??:??,???⸻",
-                                    @"[0-9][0-9][0-9][0-9]⸻??:??:??,??? ??? ??:??:??,???⸻",
-                                    @"[0-9][0-9][0-9]⸻??:??:??,??? ??? ??:??:??,???⸻",
-                                    @"[0-9][0-9]⸻??:??:??,??? ??? ??:??:??,???⸻",
-                                    @"[0-9]⸻??:??:??,??? ??? ??:??:??,???⸻"
-                };
+                var findPatterns = CuePatterns("⸻");
 
                 foreach (var pattern in findPatterns)
                 {
@@ -144,13 +144,7 @@ namespace Word.Forms
             button_ShowTS_Click(sender, e); // first show all timestamps
 
             Shared.RunWithUndo("Remove subtitle timestamps", "Error removing subtitle timestamps", () => {
-                var findPatterns = new[]
-                {
-                    @"[0-9][0-9][0-9][0-9]^13??:??:??,??? ??? ??:??:??,???^13",
-                    @"[0-9][0-9][0-9]^13??:??:??,??? ??? ??:??:??,???^13",
-                    @"[0-9][0-9]^13??:??:??,??? ??? ??:??:??,???^13",
-                    @"[0-9]^13??:??:??,??? ??? ??:??:??,???^13"
-                };
+                var findPatterns = CuePatterns("^13");
 
                 foreach (var pattern in findPatterns)
                 {
