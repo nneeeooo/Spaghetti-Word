@@ -67,8 +67,6 @@ namespace Word.Forms
         {
             if (!Shared.HasActiveDocument()) return;
 
-            var doc = Globals.ThisAddIn.Application.ActiveDocument;
-            doc.Save();
             LoadFontsData();
         }
 

@@ -119,9 +119,20 @@ namespace Word.Forms
         private void button_ShowTS_Click(object sender, EventArgs e)
         {
             Shared.RunWithUndo("Show subtitle timestamps", "Error showing subtitle timestamps", () => {
-                var doc = Globals.ThisAddIn.Application.ActiveDocument;
-                doc.Content.Font.Color = WdColor.wdColorAutomatic;
-                doc.Content.Font.Hidden = 0;
+                // Reset only what Hide marked (hidden + dark blue), so the user's own colors stay.
+                var find = Globals.ThisAddIn.Application.ActiveDocument.Content.Find;
+                find.ClearFormatting();
+                find.Replacement.ClearFormatting();
+                find.Text = "";
+                find.Replacement.Text = "";
+                find.Font.Color = WdColor.wdColorDarkBlue;
+                find.Font.Hidden = 1;
+                find.Replacement.Font.Color = WdColor.wdColorAutomatic;
+                find.Replacement.Font.Hidden = 0;
+                find.Format = true;
+                find.MatchWildcards = false;
+                find.Wrap = WdFindWrap.wdFindContinue;
+                find.Execute(Replace: WdReplace.wdReplaceAll);
             });
         }
 

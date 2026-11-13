@@ -264,7 +264,6 @@ namespace Word.Modules
         {
             range.ParagraphFormat.FirstLineIndent = 0f;
             range.ParagraphFormat.CharacterUnitFirstLineIndent = 0;
-            range.ParagraphFormat.CharacterUnitLeftIndent = 0;
         }
 
         /// <summary>

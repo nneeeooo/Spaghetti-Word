@@ -119,6 +119,7 @@ namespace Word.Forms
             RegistryHelper.SaveValue(bakeTablesPath, "DoRemoveBorders", radioButton_RemoveBorders.Checked);
             RegistryHelper.SaveValue(bakeTablesPath, "DoKeepMargins", radioButton_KeepMargins.Checked);
             RegistryHelper.SaveValue(bakeTablesPath, "DoDoNotBreakAcrossPages", checkBox_DoNotBreakAcrossPages.Checked);
+            RegistryHelper.SaveValue(bakeTablesPath, "DoRemoveSpacingBeforeAfter", checkBox_RemoveSpacingBeforeAfter.Checked);
 
             RegistryHelper.SaveValue(bakeTablesPath, "DoSetCustomMargins", radioButton_SetCustomMargins.Checked);
             RegistryHelper.SaveValue(bakeTablesPath, "MarginLeft", (float)numericUpDown_LeftMargin.Value);
