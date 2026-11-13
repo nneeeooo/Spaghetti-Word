@@ -84,20 +84,41 @@ namespace Word.Modules
         /// </summary>
         private static void HighlightFound(Range range, string pattern, WdColorIndex color)
         {
-            // Search on a copy: Find moves the range it runs on.
-            var search = range.Duplicate;
-            var end = range.End;
-            var find = search.Find;
-            find.ClearFormatting();
-            find.Text = pattern;
-            find.MatchWildcards = true;
-            find.Forward = true;
-            find.Wrap = WdFindWrap.wdFindStop;
-
-            while (find.Execute() && search.Start < end)
+            HighlightReplaceAll(range, color, find =>
             {
-                search.HighlightColorIndex = color;
-                search.Collapse(WdCollapseDirection.wdCollapseEnd);
+                find.Text = pattern;
+                find.MatchWildcards = true;
+            });
+        }
+
+        /// <summary>
+        /// One Find/ReplaceAll with Replacement.Highlight instead of a COM call per match.
+        /// "^&amp;" keeps the matched text, so only the highlight changes.
+        /// </summary>
+        private static void HighlightReplaceAll(Range range, WdColorIndex color, Action<Find> configure)
+        {
+            var options = Globals.ThisAddIn.Application.Options;
+            var previous = options.DefaultHighlightColorIndex;
+            try
+            {
+                options.DefaultHighlightColorIndex = color;
+
+                // Search on a copy: Find moves the range it runs on, and the caller reuses the range.
+                var search = range.Duplicate;
+                var find = search.Find;
+                find.ClearFormatting();
+                find.Replacement.ClearFormatting();
+                configure(find);
+                find.Replacement.Text = "^&";
+                find.Replacement.Highlight = 1;
+                find.Format = true;
+                find.Forward = true;
+                find.Wrap = WdFindWrap.wdFindStop;
+                find.Execute(Replace: WdReplace.wdReplaceAll);
+            }
+            finally
+            {
+                options.DefaultHighlightColorIndex = previous;
             }
         }
 
@@ -123,11 +144,12 @@ namespace Word.Modules
         /// </summary>
         private static void JustifiedText(Range range, WdColorIndex color)
         {
-            foreach (Paragraph paragraph in range.Paragraphs)
+            HighlightReplaceAll(range, color, find =>
             {
-                if (paragraph.Alignment == WdParagraphAlignment.wdAlignParagraphJustify)
-                    paragraph.Range.HighlightColorIndex = color;
-            }
+                find.Text = "";
+                find.MatchWildcards = false;
+                find.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphJustify;
+            });
         }
 
         /// <summary>

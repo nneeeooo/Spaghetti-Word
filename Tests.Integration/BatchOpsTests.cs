@@ -136,5 +136,104 @@ namespace Tests.Integration
                 Assert.AreEqual(0, t.Rows.AllowBreakAcrossPages);
             }
         }
+
+        // ---- highlight ----
+
+        private static bool IsHanging(string s, int i) =>
+            char.IsLetterOrDigit(s[i]) && i > 0 && s[i - 1] == ' ' && (i + 1 == s.Length || s[i + 1] == ' ' || s[i + 1] == '\r');
+
+        private static void AssertHighlight(Range doc, string s, Func<int, bool> expected, WdColorIndex color)
+        {
+            for (var i = 0; i < s.Length; i++)
+            {
+                var hl = doc.Document.Range(doc.Start + i, doc.Start + i + 1).HighlightColorIndex;
+                Assert.AreEqual(expected(i) ? color : WdColorIndex.wdNoHighlight, hl, $"char {i} '{s[i]}'");
+            }
+        }
+
+        [TestMethod, TestCategory("Word")]
+        public void FastDtp_DigitsDashesAndHangingLetters()
+        {
+            const string s = "він і в місті а б 12 – x—y 7 z\r5";
+            var doc = NewDoc(s);
+            var before = doc.Content.Text;
+            var count = doc.Characters.Count;
+
+            Spotlight.Run(doFastDtp: true);
+
+            AssertHighlight(doc.Content, s, i =>
+                char.IsDigit(s[i]) || "–—‒".IndexOf(s[i]) >= 0 || IsHanging(s, i), WdColorIndex.wdYellow);
+            Assert.AreEqual(before, doc.Content.Text);
+            Assert.AreEqual(count, doc.Characters.Count);
+        }
+
+        [TestMethod, TestCategory("Word")]
+        public void Highlight_UsesRequestedColor_RestoresDefaultColor_UndoRemoves()
+        {
+            var doc = NewDoc("a 1 b");
+            App.Options.DefaultHighlightColorIndex = WdColorIndex.wdTurquoise;
+
+            Spotlight.Run(doFastDtp: true, color: WdColorIndex.wdBrightGreen);
+
+            Assert.AreEqual(WdColorIndex.wdTurquoise, App.Options.DefaultHighlightColorIndex);
+            Assert.AreEqual(WdColorIndex.wdBrightGreen, doc.Range(2, 3).HighlightColorIndex);
+            Assert.AreEqual("a 1 b", doc.Content.Text.TrimEnd('\r'));
+
+            doc.Undo(1);
+            Assert.AreEqual(WdColorIndex.wdNoHighlight, doc.Range(2, 3).HighlightColorIndex);
+            App.Options.DefaultHighlightColorIndex = WdColorIndex.wdYellow;
+        }
+
+        [TestMethod, TestCategory("Word")]
+        public void Highlight_FootnoteAndHeader()
+        {
+            var doc = NewDoc("body text");
+            doc.Footnotes.Add(doc.Range(0, 4), Text: "note і 2");
+            var header = doc.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+            header.Text = "head 3 – q";
+
+            Spotlight.Run(doFastDtp: true);
+
+            var note = doc.Footnotes[1].Range;
+            var nt = note.Text;
+            for (var i = 0; i < nt.Length; i++)
+            {
+                var exp = char.IsDigit(nt[i]) || IsHanging(nt, i);
+                Assert.AreEqual(exp ? WdColorIndex.wdYellow : WdColorIndex.wdNoHighlight,
+                    note.Document.Range().Footnotes[1].Range.Characters[i + 1].HighlightColorIndex, $"footnote char {i}");
+            }
+            var h = doc.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+            var ht = h.Text;
+            for (var i = 0; i < ht.Length; i++)
+            {
+                var exp = char.IsDigit(ht[i]) || ht[i] == '–' || IsHanging(ht, i);
+                Assert.AreEqual(exp ? WdColorIndex.wdYellow : WdColorIndex.wdNoHighlight,
+                    h.Characters[i + 1].HighlightColorIndex, $"header char {i} '{ht[i]}'");
+            }
+        }
+
+        [TestMethod, TestCategory("Word")]
+        public void Justified_HighlightsWholeJustifiedParagraphs()
+        {
+            var doc = NewDoc("left one\rjust two\rjust three\rleft four");
+            doc.Paragraphs[1].Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
+            doc.Paragraphs[2].Alignment = WdParagraphAlignment.wdAlignParagraphJustify;
+            doc.Paragraphs[3].Alignment = WdParagraphAlignment.wdAlignParagraphJustify;
+            doc.Paragraphs[4].Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+            var header = doc.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+            header.Text = "justified header";
+            header.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphJustify;
+            var before = doc.Content.Text;
+
+            Spotlight.Run(doJustifiedText: true, color: WdColorIndex.wdPink);
+
+            Assert.AreEqual(WdColorIndex.wdNoHighlight, doc.Paragraphs[1].Range.HighlightColorIndex);
+            Assert.AreEqual(WdColorIndex.wdPink, doc.Paragraphs[2].Range.HighlightColorIndex, "whole paragraph incl. mark");
+            Assert.AreEqual(WdColorIndex.wdPink, doc.Paragraphs[3].Range.HighlightColorIndex);
+            Assert.AreEqual(WdColorIndex.wdNoHighlight, doc.Paragraphs[4].Range.HighlightColorIndex);
+            Assert.AreEqual(WdColorIndex.wdPink,
+                doc.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range.Characters[1].HighlightColorIndex);
+            Assert.AreEqual(before, doc.Content.Text);
+        }
     }
 }
