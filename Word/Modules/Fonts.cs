@@ -203,17 +203,34 @@ namespace Word.Modules
 
             Shared.ApplyGlobally(doc, range =>
             {
-                foreach (Range charRange in range.Characters)
-                {
-                    var latin = charRange.Font.Name?.TrimStart('@');
-                    var asian = charRange.Font.NameFarEast?.TrimStart('@');
-
-                    if (!string.IsNullOrEmpty(latin)) fonts.Add(latin);
-                    if (!string.IsNullOrEmpty(asian)) fonts.Add(asian);
-                }
+                foreach (Paragraph para in range.Paragraphs)
+                    CollectFontNames(para.Range, fonts, 0);
             });
 
             return fonts.OrderBy(f => f, StringComparer.CurrentCultureIgnoreCase).ToList();
+        }
+
+        // Reads the fonts of a range; if it is mixed (empty name), descends paragraph -> words -> characters.
+        private static void CollectFontNames(Range r, HashSet<string> fonts, int level)
+        {
+            var latin = r.Font.Name?.TrimStart('@');
+            var asian = r.Font.NameFarEast?.TrimStart('@');
+
+            var mixed = string.IsNullOrEmpty(latin) || string.IsNullOrEmpty(asian);
+            if (!string.IsNullOrEmpty(latin)) fonts.Add(latin);
+            if (!string.IsNullOrEmpty(asian)) fonts.Add(asian);
+            if (!mixed || level >= 2) return;
+
+            if (level == 0)
+            {
+                foreach (Range word in r.Words)
+                    CollectFontNames(word, fonts, 1);
+            }
+            else
+            {
+                foreach (Range ch in r.Characters)
+                    CollectFontNames(ch, fonts, 2);
+            }
         }
 
         /// <summary>
@@ -302,16 +319,17 @@ namespace Word.Modules
 
             // Find font paths from the registry
             var fontFilesToCopy = new List<string>();
+            var fontIndex = BuildFontPathIndex();
 
             foreach (var fontName in usedFonts)
             {
-                var fontFilePath = GetFontPathFromRegistry(fontName);
-
                 //also check if the font file is windows default, skip those
                 if (!collectDefaultFonts & WindowsDefaultFonts.Contains(fontName))
                 {
                     continue;
                 }
+
+                fontIndex.TryGetValue(fontName, out var fontFilePath);
 
                 if (!string.IsNullOrEmpty(fontFilePath) && File.Exists(fontFilePath))
                 {
@@ -431,10 +449,11 @@ namespace Word.Modules
         }
 
         /// <summary>
-        /// Gets the font file path from the Windows registry based on the font name.
+        /// Builds a font family name -> font file path index from the Windows registry. Loads each font file once.
         /// </summary>
-        internal static string GetFontPathFromRegistry(string fontName)
+        internal static Dictionary<string, string> BuildFontPathIndex()
         {
+            var index = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             var seenPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var fontsFolder = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
 
@@ -464,14 +483,14 @@ namespace Word.Modules
                         if (!File.Exists(fontPath) || !seenPaths.Add(fontPath))
                             continue;
 
-                        var fontNames = GetFontFamilyNamesFromFile(fontPath);
-                        if (fontNames.Any(name => string.Equals(name, fontName, StringComparison.OrdinalIgnoreCase)))
-                            return fontPath;
+                        foreach (var name in GetFontFamilyNamesFromFile(fontPath))
+                            if (!index.ContainsKey(name))
+                                index[name] = fontPath;
                     }
                 }
             }
 
-            return null;
+            return index;
         }
     }
 }

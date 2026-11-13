@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
 using Paragraph = Microsoft.Office.Interop.Word.Paragraph;
@@ -130,22 +128,7 @@ namespace Word.Modules
         /// </summary>
         private static void Hyphens(Range range, WdColorIndex color)
         {
-            var chars = range.Characters.Cast<Range>().ToArray();
-            var indices = new List<int>();
-
-            Parallel.For(0, chars.Length, i =>
-            {
-                if ("‒–—".Contains(chars[i].Text))
-                {
-                    lock (indices)
-                        indices.Add(i);
-                }
-            });
-
-            foreach (var i in indices)
-            {
-                chars[i].HighlightColorIndex = color;
-            }
+            HighlightFound(range, "[‒–—]", color);
         }
 
         /// <summary>
@@ -153,22 +136,28 @@ namespace Word.Modules
         /// </summary>
         private static void Digits(Range range, WdColorIndex color)
         {
-            var chars = range.Characters.Cast<Range>().ToArray();
-            var indices = new List<int>();
+            HighlightFound(range, "[0-9]", color);
+        }
 
-            Parallel.ForEach(chars.Select((c, i) => (c, i)), item =>
-            {
-                var c = item.c.Text[0];
-                if (char.IsDigit(c))
-                {
-                    lock (indices)
-                        indices.Add(item.i);
-                }
-            });
+        /// <summary>
+        /// Highlights every wildcard match of the pattern inside the range.
+        /// </summary>
+        private static void HighlightFound(Range range, string pattern, WdColorIndex color)
+        {
+            // Search on a copy: Find moves the range it runs on.
+            var search = range.Duplicate;
+            var end = range.End;
+            var find = search.Find;
+            find.ClearFormatting();
+            find.Text = pattern;
+            find.MatchWildcards = true;
+            find.Forward = true;
+            find.Wrap = WdFindWrap.wdFindStop;
 
-            foreach (var i in indices)
+            while (find.Execute() && search.Start < end)
             {
-                chars[i].HighlightColorIndex = color;
+                search.HighlightColorIndex = color;
+                search.Collapse(WdCollapseDirection.wdCollapseEnd);
             }
         }
 
@@ -177,25 +166,15 @@ namespace Word.Modules
         /// </summary>
         private static void UndelimitedText(Range range, WdColorIndex color)
         {
-            var matches = new ConcurrentBag<Range>();
-            var sentences = range.Sentences.Cast<Range>().ToList();
-
-            Parallel.ForEach(sentences, sentence =>
+            foreach (Range sentence in range.Sentences)
             {
                 var text = sentence.Text.TrimEnd();
                 if (!string.IsNullOrEmpty(text))
                 {
-                    var lastChar = text.Length > 0 ? text[text.Length - 1] : '\0'; // Replace index operator with Length-based access  
+                    var lastChar = text[text.Length - 1];
                     if (!".!?…;,".Contains(lastChar))
-                    {
-                        matches.Add(sentence.Duplicate);
-                    }
+                        sentence.HighlightColorIndex = color;
                 }
-            });
-
-            foreach (var match in matches)
-            {
-                match.HighlightColorIndex = color;
             }
         }
 
@@ -204,22 +183,10 @@ namespace Word.Modules
         /// </summary>
         private static void JustifiedText(Range range, WdColorIndex color)
         {
-            var paragraphs = range.Paragraphs.Cast<Paragraph>().ToArray();
-
-            var justifiedIndices = new List<int>();
-
-            Parallel.ForEach(paragraphs.Select((p, i) => (p, i)), item =>
+            foreach (Paragraph paragraph in range.Paragraphs)
             {
-                if (item.p.Alignment == WdParagraphAlignment.wdAlignParagraphJustify)
-                {
-                    lock (justifiedIndices)
-                        justifiedIndices.Add(item.i);
-                }
-            });
-
-            foreach (var i in justifiedIndices)
-            {
-                paragraphs[i].Range.HighlightColorIndex = color;
+                if (paragraph.Alignment == WdParagraphAlignment.wdAlignParagraphJustify)
+                    paragraph.Range.HighlightColorIndex = color;
             }
         }
 
