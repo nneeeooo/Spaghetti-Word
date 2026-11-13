@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
 using Word.Modules;
 
+using Word.Helpers;
 namespace Word.Forms
 {
     public partial class SubtitleToolsForm : Form
@@ -199,7 +200,7 @@ namespace Word.Forms
             {
                 if (!Shared.HasActiveDocument())
                 {
-                    MessageBox.Show("No active document found.", $"Save {targetExtension.ToUpper()}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    UiPrompt.Show("No active document found.", $"Save {targetExtension.ToUpper()}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -207,7 +208,7 @@ namespace Word.Forms
                 var folder = doc.Path;
                 if (string.IsNullOrEmpty(folder))
                 {
-                    MessageBox.Show("Please save the document first before running this action.", $"Save {targetExtension.ToUpper()}", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UiPrompt.Show("Please save the document first before running this action.", $"Save {targetExtension.ToUpper()}", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
 
@@ -230,14 +231,14 @@ namespace Word.Forms
                 Globals.ThisAddIn.Application.Documents.Open(outputPath);
 
                 Clipboard.SetText(outputPath);
-                MessageBox.Show($"{targetExtension.ToUpper()} saved to:\n{outputPath}",
+                UiPrompt.Show($"{targetExtension.ToUpper()} saved to:\n{outputPath}",
                                 $"Save {targetExtension.ToUpper()}\n\nPath is copied to clipboard!",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving {targetExtension.ToUpper()}:\n{ex.Message}", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UiPrompt.Show($"Error saving {targetExtension.ToUpper()}:\n{ex.Message}", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // Reopen the original source document if we closed it
                 if (closed && File.Exists(inputPath))
@@ -264,21 +265,21 @@ namespace Word.Forms
                 var doc = Globals.ThisAddIn.Application.ActiveDocument;
                 if (doc == null)
                 {
-                    MessageBox.Show("No open document found.", "Save DOCX", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    UiPrompt.Show("No open document found.", "Save DOCX", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 var folder = doc.Path;
                 if (string.IsNullOrEmpty(folder))
                 {
-                    MessageBox.Show("Please save the document manually first before running this action.", "Document Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UiPrompt.Show("Please save the document manually first before running this action.", "Document Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
 
                 var fileName = Path.GetFileNameWithoutExtension(doc.Name);
                 if (string.IsNullOrEmpty(fileName))
                 {
-                    MessageBox.Show("Could not determine the file name.\nSave the document and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    UiPrompt.Show("Could not determine the file name.\nSave the document and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
 
@@ -299,13 +300,13 @@ namespace Word.Forms
                     CompatibilityMode: 15
                 );
 
-                MessageBox.Show($"DOCX saved to:\n{newPath}", "Save DOCX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UiPrompt.Show($"DOCX saved to:\n{newPath}", "Save DOCX", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Clipboard.SetText(newPath);
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error saving  DOCX:\n" + ex.Message, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UiPrompt.Show("Error saving  DOCX:\n" + ex.Message, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             Close();

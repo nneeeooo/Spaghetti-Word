@@ -6,6 +6,7 @@ using Microsoft.Office.Interop.Word;
 using Application = Microsoft.Office.Interop.Word.Application;
 using Shape = Microsoft.Office.Interop.Word.Shape;
 
+using Word.Helpers;
 namespace Word.Modules
 {
     /// <summary>
@@ -39,7 +40,7 @@ namespace Word.Modules
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error during view setup: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UiPrompt.Show($"Error during view setup: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -218,7 +219,7 @@ namespace Word.Modules
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
+                UiPrompt.Show(
                     ex.Message,
                     errorTitle,
                     MessageBoxButtons.OK,

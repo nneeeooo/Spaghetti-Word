@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
 
+using Word.Helpers;
 namespace Word.Modules
 {
     public static class Tables
@@ -79,7 +80,7 @@ namespace Word.Modules
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
+                UiPrompt.Show(
                     ex.Message,
                     "Error",
                     MessageBoxButtons.OK,

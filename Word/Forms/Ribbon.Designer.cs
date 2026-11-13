@@ -47,6 +47,7 @@
             this.buttonHLForm = this.Factory.CreateRibbonButton();
             this.buttonConversionForm = this.Factory.CreateRibbonButton();
             this.button_Shortcuts = this.Factory.CreateRibbonButton();
+            this.toggleButton_Mcp = this.Factory.CreateRibbonToggleButton();
             this.tabSpaghetti.SuspendLayout();
             this.groupUtilities.SuspendLayout();
             this.group1.SuspendLayout();
@@ -68,6 +69,7 @@
             this.groupUtilities.Items.Add(this.button_ExtractAllImages);
             this.groupUtilities.Items.Add(this.button_SubtitleTools);
             this.groupUtilities.Items.Add(this.button_ColorPicker);
+            this.groupUtilities.Items.Add(this.toggleButton_Mcp);
             this.groupUtilities.Label = "Utilities";
             this.groupUtilities.Name = "groupUtilities";
             // 
@@ -131,6 +133,15 @@
             this.button_FontChanger.Name = "button_FontChanger";
             this.button_FontChanger.ShowImage = true;
             this.button_FontChanger.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_FontChanger_Click);
+            // 
+            // toggleButton_Mcp
+            // 
+            this.toggleButton_Mcp.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButton_Mcp.Label = "MCP";
+            this.toggleButton_Mcp.Name = "toggleButton_Mcp";
+            this.toggleButton_Mcp.ScreenTip = "MCP server";
+            this.toggleButton_Mcp.SuperTip = "Start/stop the local MCP server so an AI client can drive Word. Off by default.";
+            this.toggleButton_Mcp.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_Mcp_Click);
             // 
             // groupDtpAndPrep
             // 
@@ -200,6 +211,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_ColorPicker;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButton_Mcp;
     }
 
     partial class ThisRibbonCollection

@@ -448,6 +448,13 @@
     <Compile Include="Modules\ImageExtract.cs" />
     <Compile Include="Modules\FontIndex.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
+    <Compile Include="Helpers\UiPrompt.cs" />
+    <Compile Include="Mcp\McpCore.cs" />
+    <Compile Include="Mcp\McpServer.cs" />
+    <Compile Include="Mcp\FormTools.cs" />
+    <Compile Include="Mcp\WordTools.cs" />
+    <Compile Include="Mcp\ActionTools.cs" />
+    <Compile Include="Mcp\McpHost.cs" />
     <Compile Include="Modules\Spotlight.cs" />
     <Compile Include="Forms\SpotlightForm.cs">
       <SubType>Form</SubType>

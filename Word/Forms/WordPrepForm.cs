@@ -65,7 +65,7 @@ namespace Word.Forms
 
             Close();
 
-            MessageBox.Show(
+            UiPrompt.Show(
                 "Conversion completed successfully!",
                 "Conversion",
                 MessageBoxButtons.OK,

@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Win32;
 
+using Word.Helpers;
 namespace Word.Modules
 {
     /// <summary>
@@ -279,7 +280,7 @@ namespace Word.Modules
             }
             catch
             {
-                MessageBox.Show(
+                UiPrompt.Show(
                     "Error loading font table.\nFile might be corrupt.",
                     "Error Reading Font Table",
                     MessageBoxButtons.OK,
@@ -304,7 +305,7 @@ namespace Word.Modules
             // and the _fonts folder would land in Word's current directory.
             if (string.IsNullOrEmpty(doc.Path))
             {
-                MessageBox.Show(
+                UiPrompt.Show(
                     "Please save the document before collecting fonts.",
                     "Document Not Saved",
                     MessageBoxButtons.OK,
@@ -347,7 +348,7 @@ namespace Word.Modules
             {
                 // Show warning if no fonts were found (no custom font if collectDefaultFonts is false)
                 if (collectDefaultFonts) { 
-                    MessageBox.Show(
+                    UiPrompt.Show(
                         "No fonts found in the document!",
                         "No Fonts Found",
                         MessageBoxButtons.OK,
@@ -356,7 +357,7 @@ namespace Word.Modules
                 }
                 else
                 {
-                    MessageBox.Show(
+                    UiPrompt.Show(
                         "No custom fonts found in the document.\nOnly Windows default fonts are used.",
                         "No Custom Fonts Found",
                         MessageBoxButtons.OK,
@@ -398,7 +399,7 @@ namespace Word.Modules
                         catch { }
                     }
 
-                    MessageBox.Show(
+                    UiPrompt.Show(
                         $"Error copying font '{Path.GetFileName(fontPath)}': {ex.Message}",
                         "Copy Error",
                         MessageBoxButtons.OK,
@@ -410,7 +411,7 @@ namespace Word.Modules
             }
 
             // Show success message
-            MessageBox.Show(
+            UiPrompt.Show(
                 $"{fontFilesToCopy.Count} {(fontFilesToCopy.Count == 1 ? "font" : "fonts")} collected successfully!",
                 "Font Collection Report",
                 MessageBoxButtons.OK,

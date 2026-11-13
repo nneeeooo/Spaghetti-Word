@@ -4,6 +4,8 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.Office.Tools.Ribbon;
 using Word.Forms;
+using Word.Helpers;
+using Word.Mcp;
 using Word.Modules;
 
 namespace Word
@@ -26,6 +28,42 @@ namespace Word
             // Forms are created on first use by SpawnForm. Creating them here runs at Word startup,
             // when no document may be open yet (ActiveDocument throws then).
             Instance = this;
+            RegisterMcpForms();
+            SyncMcpToggle();
+        }
+
+        // ---- MCP: fixed name -> form map (see Word/Mcp/FormTools.cs) ----
+
+        private void RegisterMcpForms()
+        {
+            var r = FormRegistry.Instance;
+            r.Register("spotlight", open => open ? SpawnForm(ref spotlightForm) : spotlightForm);
+            r.Register("wordprep", open => open ? SpawnForm(ref conversionForm) : conversionForm);
+            r.Register("fontsreport", open => open ? SpawnForm(ref fontsForm) : fontsForm);
+            r.Register("fontchanger", open => open ? SpawnForm(ref fontChangerForm) : fontChangerForm);
+            r.Register("subtitles", open => open ? SpawnForm(ref subsForm) : subsForm);
+            r.Register("shortcuts", open => open ? SpawnForm(ref shortcutsForm) : shortcutsForm);
+            r.Register("colorpicker", open => open ? SpawnForm(ref colorPickerForm) : colorPickerForm);
+            r.Register("about", open => open ? SpawnForm(ref aboutForm) : aboutForm);
+        }
+
+        internal void SyncMcpToggle()
+        {
+            if (toggleButton_Mcp != null) toggleButton_Mcp.Checked = McpHost.Running;
+        }
+
+        private void toggleButton_Mcp_Click(object sender, RibbonControlEventArgs e)
+        {
+            var want = toggleButton_Mcp.Checked;
+            try
+            {
+                Globals.ThisAddIn.SetMcp(want);
+            }
+            catch (Exception ex)
+            {
+                UiPrompt.Show("MCP server: " + ex.Message, "MCP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            SyncMcpToggle();
         }
 
         public static T SpawnForm<T>(ref T form) where T : Form, new()

@@ -6,6 +6,7 @@ using Microsoft.Office.Interop.Word;
 using Document = Microsoft.Office.Interop.Word.Document;
 using Paragraph = Microsoft.Office.Interop.Word.Paragraph;
 
+using Word.Helpers;
 namespace Word.Modules
 {
     internal static class Text
@@ -84,7 +85,7 @@ namespace Word.Modules
             catch (Exception ex)
             {
                 failed = true;
-                MessageBox.Show(
+                UiPrompt.Show(
                      ex.Message,
                      "Error",
                      MessageBoxButtons.OK,
