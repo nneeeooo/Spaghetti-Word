@@ -427,6 +427,7 @@
     <Compile Include="Forms\SubtitleToolsForm.Designer.cs">
       <DependentUpon>SubtitleToolsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\SubtitleConvert.cs" />
     <Compile Include="Modules\Subtitles.cs" />
     <Compile Include="Modules\Tables.cs" />
     <Compile Include="Modules\Text.cs" />
