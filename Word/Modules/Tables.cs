@@ -113,10 +113,7 @@ namespace Word.Modules
         /// </summary>
         private static void DoNotBreakAcrossPages(Table table)
         {
-            foreach (Row row in table.Rows)
-            {
-                row.AllowBreakAcrossPages = 0;
-            }
+            table.Rows.AllowBreakAcrossPages = 0;
         }
 
         /// <summary>
@@ -140,14 +137,9 @@ namespace Word.Modules
         /// </summary>
         private static void RemoveSpacingBeforeAfter(Table table)
         {
-            foreach (Cell cell in table.Range.Cells)
-            {
-                foreach (Paragraph para in cell.Range.Paragraphs)
-                {
-                    para.Format.SpaceBefore = 0f;
-                    para.Format.SpaceAfter = 0f;
-                }
-            }
+            var format = table.Range.ParagraphFormat;
+            format.SpaceBefore = 0f;
+            format.SpaceAfter = 0f;
         }
 
         /// <summary>
@@ -188,15 +180,10 @@ namespace Word.Modules
         /// </summary>
         private static void ResetPaginationSettings(Table table)
         {
-            foreach (Cell cell in table.Range.Cells)
-            {
-                foreach (Paragraph para in cell.Range.Paragraphs)
-                {
-                    para.Format.KeepWithNext = 0;       // Disable Keep with next
-                    para.Format.KeepTogether = 0;       // Disable Keep lines together
-                    para.Format.PageBreakBefore = 0;    // Disable Page break before
-                }
-            }
+            var format = table.Range.ParagraphFormat;
+            format.KeepWithNext = 0;       // Disable Keep with next
+            format.KeepTogether = 0;       // Disable Keep lines together
+            format.PageBreakBefore = 0;    // Disable Page break before
         }
 
         /// <summary>
