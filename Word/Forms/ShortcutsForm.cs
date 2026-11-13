@@ -10,8 +10,6 @@ using Tables = Word.Modules.Tables;
 
 namespace Word.Forms
 {
-    // TODO: Review, test, add comments, and refactor
-
     internal partial class ShortcutsForm : Form
     {
         private readonly string registryPath = @"Software\Macaroni\QuickActions";
@@ -37,61 +35,49 @@ namespace Word.Forms
 
         private void button_KeepWithNext_Click(object sender, EventArgs e)
         {
-            Shared.RunWithUndo("Toggle Keep With Next", "Error", () =>
+            ToggleParagraphFlag("Toggle Keep With Next",
+                f => f.KeepWithNext,
+                (f, v) => { f.KeepWithNext = v; f.KeepTogether = v; });
+        }
+
+        private void button_PageBreakBefore_Click(object sender, EventArgs e)
+        {
+            ToggleParagraphFlag("Toggle Page Break Before",
+                f => f.PageBreakBefore,
+                (f, v) => f.PageBreakBefore = v);
+        }
+
+        /// <summary>
+        /// Turns a paragraph flag on for the selected paragraphs if any of them lacks it, otherwise off.
+        /// </summary>
+        private static void ToggleParagraphFlag(string undoName, Func<ParagraphFormat, int> get, Action<ParagraphFormat, int> set)
+        {
+            Shared.RunWithUndo(undoName, "Error", () =>
             {
-                if (!Shared.HasActiveDocument()) return;
-
                 var app = Globals.ThisAddIn.Application;
+                var paragraphs = app.Selection.Paragraphs;
 
-                var sel = Globals.ThisAddIn.Application.Selection;
-                var paragraphs = sel.Paragraphs;
+                var shouldEnable = paragraphs.Cast<Paragraph>().Any(p => get(p.Format) != -1);
 
-                var shouldEnable = paragraphs.Cast<Paragraph>().Any(p => p.Format.KeepWithNext != -1);
-
-                // Determine if we should enable it (if any paragraph doesn't have it)
-
-                // Apply setting
                 foreach (Paragraph p in paragraphs)
-                {
-                    p.Format.KeepWithNext = shouldEnable ? -1 : 0;
-                    p.Format.KeepTogether = shouldEnable ? -1 : 0;
-                }
+                    set(p.Format, shouldEnable ? -1 : 0);
 
                 app.Activate();
             });
         }
 
-        private void button_PageBreakBefore_Click(object sender, EventArgs e)
+        private static void ShowDialog(WdWordDialog dialog)
         {
-            Shared.RunWithUndo("Toggle Page Break Before", "Error", () =>
-            {
-                if (!Shared.HasActiveDocument()) return;
+            if (!Shared.HasActiveDocument()) return;
 
-                var app = Globals.ThisAddIn.Application;
+            Globals.ThisAddIn.Application.Dialogs[dialog].Show();
+        }
 
-                var sel = Globals.ThisAddIn.Application.Selection;
-                var paragraphs = sel.Paragraphs;
+        private static void ExecuteMso(string idMso)
+        {
+            if (!Shared.HasActiveDocument()) return;
 
-                var shouldEnable = false;
-
-                // Determine if we should enable it (if any paragraph doesn't have it)
-                foreach (Paragraph p in paragraphs)
-                {
-                    if (p.Format.PageBreakBefore != -1)
-                    {
-                        shouldEnable = true;
-                        break;
-                    }
-                }
-
-                // Apply setting
-                foreach (Paragraph p in paragraphs)
-                {
-                    p.Format.PageBreakBefore = shouldEnable ? -1 : 0;
-                }
-
-                app.Activate();
-            });
+            Globals.ThisAddIn.Application.CommandBars.ExecuteMso(idMso);
         }
 
         private void QuickShortcutsForm_Load(object sender, EventArgs e)
@@ -320,61 +306,23 @@ namespace Word.Forms
             }
         }
 
-        private void button_SplitCell_Click(object sender, EventArgs e)
-        {
-            if (!Shared.HasActiveDocument()) return;
-
-            var app = Globals.ThisAddIn.Application;
-
-            app.Dialogs[WdWordDialog.wdDialogTableSplitCells].Show();
-        }
+        private void button_SplitCell_Click(object sender, EventArgs e) => ShowDialog(WdWordDialog.wdDialogTableSplitCells);
 
         private void button_GlobalHide_Click(object sender, EventArgs e)
         {
             Modules.Text.GlobalHide();
         }
 
-        private void button_SelectionPane_Click(object sender, EventArgs e)
-        {
-            if (!Shared.HasActiveDocument()) return;
+        private void button_SelectionPane_Click(object sender, EventArgs e) => ExecuteMso("SelectionPane");
 
-            Globals.ThisAddIn.Application.CommandBars.ExecuteMso("SelectionPane");
-        }
+        private void button_FormatPane_Click(object sender, EventArgs e) => ExecuteMso("ObjectFormatDialog");
 
-        private void button_FormatPane_Click(object sender, EventArgs e)
-        {
-            if (!Shared.HasActiveDocument()) return;
+        private void button_InsertTable_Click(object sender, EventArgs e) => ShowDialog(WdWordDialog.wdDialogTableInsertTable);
 
-            Globals.ThisAddIn.Application.CommandBars.ExecuteMso("ObjectFormatDialog");
-        }
+        private void button_TableProperties_Click(object sender, EventArgs e) => ShowDialog(WdWordDialog.wdDialogTableProperties);
 
-        private void button_InsertTable_Click(object sender, EventArgs e)
-        {
-            if (!Shared.HasActiveDocument()) return;
+        private void button_TableOptions_Click(object sender, EventArgs e) => ShowDialog(WdWordDialog.wdDialogTableTableOptions);
 
-            Globals.ThisAddIn.Application.Dialogs[WdWordDialog.wdDialogTableInsertTable].Show();
-        }
-
-        private void button_TableProperties_Click(object sender, EventArgs e)
-        {
-            if (!Shared.HasActiveDocument()) return;
-
-            Globals.ThisAddIn.Application.Dialogs[WdWordDialog.wdDialogTableProperties].Show();
-
-        }
-
-        private void button_TableOptions_Click(object sender, EventArgs e)
-        {
-            if (!Shared.HasActiveDocument()) return;
-
-            Globals.ThisAddIn.Application.Dialogs[WdWordDialog.wdDialogTableTableOptions].Show();
-        }
-
-        private void button_StylesPane_Click(object sender, EventArgs e)
-        {
-            if (!Shared.HasActiveDocument()) return;
-
-            Globals.ThisAddIn.Application.CommandBars.ExecuteMso("StylesPane");
-        }
+        private void button_StylesPane_Click(object sender, EventArgs e) => ExecuteMso("StylesPane");
     }
 }
