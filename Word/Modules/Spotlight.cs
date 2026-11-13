@@ -26,21 +26,9 @@ namespace Word.Modules
             WdColorIndex color = WdColorIndex.wdYellow
         )
         {
-            // TODO: duplication, refactor with a wrapper later
-            if (!Shared.HasActiveDocument()) return;
-
-            var app = Globals.ThisAddIn.Application;
-            var doc = app.ActiveDocument;
-
-            app.ScreenUpdating = false;
-
-            var undo = app.UndoRecord;
-
-            if (!undo.IsRecordingCustomRecord)
-                undo.StartCustomRecord("Highlight");
-            try
+            Shared.RunWithUndo("Highlight", "Highlight Error", () =>
             {
-                Shared.ApplyGlobally(doc, range =>
+                Shared.ApplyGlobally(Globals.ThisAddIn.Application.ActiveDocument, range =>
                 {
                     if (doFastDtp)
                     {
@@ -58,28 +46,7 @@ namespace Word.Modules
                     if (doJustifiedText) JustifiedText(range, color);
                     if (doUndelimitedText) UndelimitedText(range, color);
                 });
-
-            }
-            catch (Exception ex)
-            {
-               MessageBox.Show(
-                    ex.Message,
-                    "Highlight Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
-            finally
-            {
-                if (undo.IsRecordingCustomRecord)
-                    undo.EndCustomRecord();
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-
-                app.ScreenUpdating = true;
-            }
+            }, freezeScreen: true);
         }
 
         /// <summary>
@@ -87,40 +54,13 @@ namespace Word.Modules
         /// </summary>
         internal static void Clear()
         {
-            if (!Shared.HasActiveDocument()) return;
-
-            var app = Globals.ThisAddIn.Application;
-            var doc = app.ActiveDocument;
-
-            app.ScreenUpdating = false;
-            var undo = app.UndoRecord;
-
-            if (!undo.IsRecordingCustomRecord)
-                undo.StartCustomRecord("Clear Highlight");
-
-            try
+            Shared.RunWithUndo("Clear Highlight", "Error", () =>
             {
-                Shared.ApplyGlobally(doc, range =>
+                Shared.ApplyGlobally(Globals.ThisAddIn.Application.ActiveDocument, range =>
                 {
                     range.HighlightColorIndex = WdColorIndex.wdNoHighlight;
                 });
-            }
-            catch (Exception ex) {
-                MessageBox.Show(
-                     ex.Message,
-                     "Error",
-                     MessageBoxButtons.OK,
-                     MessageBoxIcon.Error
-                 );
-            }
-            finally             {
-                if (undo.IsRecordingCustomRecord)
-                    undo.EndCustomRecord();
-
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-                app.ScreenUpdating = true;
-            }
+            }, freezeScreen: true);
         }
 
         /// <summary>

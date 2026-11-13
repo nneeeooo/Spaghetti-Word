@@ -197,16 +197,13 @@ namespace Word.Modules
         /// <summary>
         /// Wrapper for running an action under an undo record in Word.
         /// </summary>
-        internal static void RunWithUndo(string undoRecordName, string errorTitle, Action action)
+        internal static void RunWithUndo(string undoRecordName, string errorTitle, Action action, bool freezeScreen = false)
         {
-            // TODO: improve
-            // 1. add error message prexif arg
-            // 2. add toggle for screen updating
-            // 3. use this wrapper in conversion classes to avoid code duplication
             if (!HasActiveDocument()) return;
 
             var app = Globals.ThisAddIn.Application;
             var undo = app.UndoRecord;
+            if (freezeScreen) app.ScreenUpdating = false;
 
             var startedUndo = false;
             if (!undo.IsRecordingCustomRecord)
