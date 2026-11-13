@@ -110,7 +110,7 @@ namespace Tests.Integration
         public void Fix4_FastDtp_HighlightsHangingLetters()
         {
             var doc = NewDoc();
-            const string s = "\u0432\u0456\u043d \u0456 \u0432 \u043c\u0456\u0441\u0442\u0456 \u0430 \u0431 \u0449\u0435";
+            const string s = "\u0432\u0456\u043d \u0456 \u0432 \u043c\u0456\u0441\u0442\u0456 \u0430 \u0431";
             doc.Content.InsertAfter(s);
 
             Spotlight.Run(doFastDtp: true);

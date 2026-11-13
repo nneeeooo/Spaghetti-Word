@@ -55,7 +55,7 @@
             // 
             // tabSpaghetti
             // 
-            this.tabSpaghetti.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.tabSpaghetti.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Custom;
             this.tabSpaghetti.Groups.Add(this.groupUtilities);
             this.tabSpaghetti.Groups.Add(this.group1);
             this.tabSpaghetti.Groups.Add(this.groupDtpAndPrep);

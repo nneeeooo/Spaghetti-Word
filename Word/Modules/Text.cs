@@ -117,7 +117,7 @@ namespace Word.Modules
         }
 
         /// <summary>
-        /// Removes all soft line breaks (manual line breaks) from the specified range and replaces them with spaces.
+        /// Removes all soft line breaks (manual line breaks) from the specified range and replaces them with paragraph breaks.
         /// </summary>
         private static void RemoveSoftbreaks(Range range)
         {
@@ -380,7 +380,7 @@ namespace Word.Modules
             var app = Globals.ThisAddIn.Application;
             var doc = Globals.ThisAddIn.Application.ActiveDocument;
 
-            Shared.RunWithUndo("Global Unhide", "Error", () =>
+            Shared.RunWithUndo("Global Hide", "Error", () =>
             {
                 if (!Shared.HasActiveDocument()) return;
 

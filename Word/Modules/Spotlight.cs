@@ -197,11 +197,13 @@ namespace Word.Modules
         {
             // Search on a copy: Find moves the range it runs on, and the caller passes
             // the same range on to Hyphens() and Digits() afterwards.
+            foreach (var pattern in new[] { " [! ] ", " [! ]^13" })
+            {
             var search = range.Duplicate;
             var find = search.Find;
             find.ClearFormatting();
             // this works well enough to avoid very heavy forloops inside find/replace caused by huge wildcard range operators
-            find.Text = " [! ] ";
+            find.Text = pattern;
             find.MatchWildcards = true;
 
             while (find.Execute())
@@ -223,6 +225,7 @@ namespace Word.Modules
                 // is also the leading space of the next single letter.
                 search.SetRange(highlightEnd, highlightEnd);
             }
-        } 
+            }
+        }
     }
 }
