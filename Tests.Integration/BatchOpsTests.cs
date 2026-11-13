@@ -235,5 +235,71 @@ namespace Tests.Integration
                 doc.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range.Characters[1].HighlightColorIndex);
             Assert.AreEqual(before, doc.Content.Text);
         }
+
+        private static string HighlightedParts(Range r)
+        {
+            var parts = new System.Text.StringBuilder();
+            var on = false;
+            foreach (Range c in r.Characters)
+            {
+                var h = c.HighlightColorIndex != WdColorIndex.wdNoHighlight;
+                if (h && !on) parts.Append('[');
+                if (!h && on) parts.Append(']');
+                on = h;
+                parts.Append(c.Text.Replace("\r", "¶").Replace("\a", "¤"));
+            }
+            if (on) parts.Append(']');
+            return parts.ToString();
+        }
+        [TestMethod, TestCategory("Word")]
+        public void Undelimited_HighlightsLastSentenceWithoutDelimiter()
+        {
+            var doc = NewDoc("Ends with dot.\rNo delimiter here\rQuestion?\rTrailing comma,\rtrail space   \r" +
+                             "First. Second without\r\rWith semi;\rQuoted \"Go.\" Next one\r  lead space\r\rend");
+            var before = doc.Content.Text;
+
+            Spotlight.Run(doUndelimitedText: true);
+
+            // Word's own sentence rules: blank paragraphs stay with the previous sentence, a quote after "." goes
+            // with the next sentence. Same expectation holds for the old Sentences-based implementation.
+            Assert.AreEqual("Ends with dot.¶[No delimiter here¶]Question?¶Trailing comma,¶" +
+                            "[trail space   ¶]First. [Second without¶¶]With semi;¶" +
+                            "Quoted \"Go.[\" Next one¶  lead space¶¶end¶]",
+                HighlightedParts(doc.Content));
+            Assert.AreEqual(before, doc.Content.Text);
+        }
+
+        [TestMethod, TestCategory("Word")]
+        public void Undelimited_TableCells()
+        {
+            var doc = NewDoc("before.");
+            var t = doc.Tables.Add(doc.Range(doc.Content.End - 1, doc.Content.End - 1), 1, 2);
+            t.Cell(1, 1).Range.Text = "cell one";
+            t.Cell(1, 2).Range.Text = "cell two.";
+
+            Spotlight.Run(doUndelimitedText: true);
+
+            // Same as before the change: the cell mark "\r\a" is not whitespace for TrimEnd, so every cell is highlighted.
+            Assert.AreEqual("before.¶[cell one¶¤cell two.¶¤¶¤¶]", HighlightedParts(doc.Content));
+        }
+
+        [TestMethod, TestCategory("Word")]
+        public void FieldInRange_FallsBackToSlowPathAndStillCorrect()
+        {
+            var doc = NewDoc("start ї ");
+            var end = doc.Range(doc.Content.End - 1, doc.Content.End - 1);
+            doc.Fields.Add(end, WdFieldType.wdFieldEmpty, "PAGE", false);
+            doc.Content.InsertAfter(" a b\rlast c");
+            doc.Fields.Update();
+            var before = doc.Content.Text;
+
+            Spotlight.Run(doFastDtp: true);
+
+            var hl = doc.Characters.Cast<Range>()
+                .Where(c => c.HighlightColorIndex != WdColorIndex.wdNoHighlight && char.IsLetter(c.Text[0]))
+                .Select(c => c.Text).ToList();
+            CollectionAssert.AreEqual(new[] { "ї", "a", "b", "c" }, hl);
+            Assert.AreEqual(before, doc.Content.Text);
+        }
     }
 }
