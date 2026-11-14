@@ -660,6 +660,9 @@
     <None Include="Resources\unbreak_sm2.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\server_window.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\directory_check-31.png" />
   </ItemGroup>
   <ItemGroup>

@@ -65,6 +65,9 @@ namespace Word
                 case "Lamp_32x321": bmp = Properties.Resources.Lamp_32x321; break;
                 case "abc1_BMP__8_bit___3__32x32": bmp = Properties.Resources.abc1_BMP__8_bit___3__32x32; break;
                 case "Regedit_32x32_0": bmp = Properties.Resources.Regedit_32x32_0; break;
+                case "server_window": bmp = Properties.Resources.server_window; break;
+                case "Resize_sheet__H__16x162": bmp = Properties.Resources.Resize_sheet__H__16x162; break;
+                case "document_1": bmp = Properties.Resources.document_1; break;
                 default: return null;
             }
             return PictureConverter.ToPictureDisp(bmp);

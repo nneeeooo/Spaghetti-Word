@@ -8,7 +8,7 @@
           <button id="button_ExtractAllImages" label="Extract All Images" size="large" getImage="GetImage" tag="Folder_Transfer_32x32" onAction="button_ExtractAllImages_Click" />
           <button id="button_SubtitleTools" label="Subtitle Tools" size="large" getImage="GetImage" tag="video__1" onAction="button_SubtitleTools_Click" />
           <button id="button_ColorPicker" label="Color Picker" size="large" getImage="GetImage" tag="_32_x_32___BMP__4_bit_" onAction="button_ColorPicker_Click" />
-          <toggleButton id="toggleButton_Mcp" label="MCP" size="large" screentip="MCP server" supertip="Start/stop the local MCP server so an AI client can drive Word. Off by default." getPressed="Mcp_GetPressed" onAction="toggleButton_Mcp_Click" />
+          <toggleButton id="toggleButton_Mcp" label="MCP" size="large" getImage="GetImage" tag="server_window" screentip="MCP server" supertip="Start/stop the local MCP server so an AI client can drive Word. Off by default." getPressed="Mcp_GetPressed" onAction="toggleButton_Mcp_Click" />
         </group>
         <group id="group1" label="Fonts">
           <button id="button_FontManager" label="Fonts Report" size="large" getImage="GetImage" tag="font_tt_0" onAction="button_FontChecker_Click" />
@@ -24,26 +24,26 @@
   </ribbon>
   <contextMenus>
     <contextMenu idMso="ContextMenuTextTable">
-      <button id="fixTable_TextTable" label="Fix table" onAction="FixTable_Click" />
-      <checkBox id="pbb_TextTable" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+      <button id="fixTable_TextTable" label="Fix table" getImage="GetImage" tag="Resize_sheet__H__16x162" onAction="FixTable_Click" />
+      <toggleButton id="pbb_TextTable" label="Page break before" getImage="GetImage" tag="document_1" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
     </contextMenu>
     <contextMenu idMso="ContextMenuTableWhole">
-      <button id="fixTable_TableWhole" label="Fix table" onAction="FixTable_Click" />
+      <button id="fixTable_TableWhole" label="Fix table" getImage="GetImage" tag="Resize_sheet__H__16x162" onAction="FixTable_Click" />
     </contextMenu>
     <contextMenu idMso="ContextMenuText">
-      <checkBox id="pbb_Text" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+      <toggleButton id="pbb_Text" label="Page break before" getImage="GetImage" tag="document_1" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
     </contextMenu>
     <contextMenu idMso="ContextMenuList">
-      <checkBox id="pbb_List" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+      <toggleButton id="pbb_List" label="Page break before" getImage="GetImage" tag="document_1" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
     </contextMenu>
     <contextMenu idMso="ContextMenuHeading">
-      <checkBox id="pbb_Heading" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+      <toggleButton id="pbb_Heading" label="Page break before" getImage="GetImage" tag="document_1" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
     </contextMenu>
     <contextMenu idMso="ContextMenuSpell">
-      <checkBox id="pbb_Spell" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+      <toggleButton id="pbb_Spell" label="Page break before" getImage="GetImage" tag="document_1" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
     </contextMenu>
     <contextMenu idMso="ContextMenuGrammar">
-      <checkBox id="pbb_Grammar" label="Page break before" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
+      <toggleButton id="pbb_Grammar" label="Page break before" getImage="GetImage" tag="document_1" getPressed="PageBreakBefore_GetPressed" onAction="PageBreakBefore_Click" />
     </contextMenu>
   </contextMenus>
 </customUI>

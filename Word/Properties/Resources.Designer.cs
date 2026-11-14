@@ -463,6 +463,16 @@ namespace Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap server_window {
+            get {
+                object obj = ResourceManager.GetObject("server_window", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Resize_sheet__H__16x162 {
             get {
                 object obj = ResourceManager.GetObject("Resize sheet (H)_16x162", resourceCulture);
