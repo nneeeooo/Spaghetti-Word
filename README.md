@@ -14,3 +14,11 @@ Provides global formatting and cleanup routines that drastically reduce time spe
 - Microsoft Office VSTO
 - C#
 - Windows Forms
+
+# License
+
+Source-available. Free for personal and noncommercial use under PolyForm Noncommercial 1.0.0. Companies: see [COMMERCIAL.md](COMMERCIAL.md).
+
+Versions published before this commit were MIT and stay MIT for anyone who got them.
+
+Third-party components: see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
